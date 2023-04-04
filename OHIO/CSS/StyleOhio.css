@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: linear-gradient(-45deg, #E3ECFA, #FFC2EF, #e7bbe3, #f520ea);
+    background: linear-gradient(to right, #6A0DAD, #a032b1, #d458b6, #f681bb, #ffaed0);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
   }
@@ -20,12 +20,63 @@ body {
 }
 
 .login-container {
+    padding-top: 10%;
+    padding-left: 5%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     justify-content: flex-start;
+    @font-face { font-family: Montserrat; src: url('Montserrat.ttf'); } 
   }
 
+  .login-container p {
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+  }
+
+  .login-container label {
+    font-size: 40px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+  }
+  .login-container h {
+    font-size: 17px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+  }
+  input[type="checkbox"] {
+    background-color: transparent;
+    border: none;
+  }
+  form button[type="submit"] {
+    background-color: black;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+  
+  
+  form button[type="submit"]:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+  input[type="email"],
+  input[type="password"] {
+    background-color: transparent;
+    border: 1px solid black;
+    height: 40px;
+    padding: 10px;
+    width: 50%;
+    box-sizing: border-box;
+  }
 .navbar {
     background-color: #000000;
     height: 50px;

@@ -19,7 +19,7 @@ body {
     display: inline-block;
     color: black;
     text-decoration: none;
-    font-family: "Montserrat", sans-serif;
+    @font-face { font-family: Montserrat; src: url('Montserrat.ttf'); } 
     font-size: 30px;
     padding: 0 10px; /* Add padding between links */
   }
@@ -84,18 +84,39 @@ body {
     font-weight: normal;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-family: "Montserrat", sans-serif;
+    @font-face { font-family: Montserrat; src: url('Montserrat.ttf'); } 
     border:none
 }
 
 .title h1 {
     color: black;
-    font-family: "Montserrat", sans-serif;
+    @font-face { font-family: Montserrat; src: url('Montserrat.ttf'); } 
     font-size: 140px;
     font-weight: bold;
     margin: 0;
     padding: 0;
     animation: pop 1s ease-in-out infinite;
+}
+@media screen and (max-width: 1678px)  {
+  .title h1 {
+    font-size: 100px;
+  }
+}
+@media screen and (max-height: 1200px)  {
+  .title h1 {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .title h1 {
+    font-size: 70px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .title h1 {
+    font-size: 2em;
+  }
 }
 
 
