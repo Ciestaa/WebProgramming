@@ -7,6 +7,7 @@ body {
     width: 100%;
     background: linear-gradient(45deg,#FCDAE9,#FFC2EF, #ffafcc,#e7bbe3, #CCD5FF, #cdb4db);
     background-size: 200% 200% ;
+    background-attachment: fixed; 
     animation: color 12s ease-in-out infinite;
   }
   @keyframes color{
@@ -23,7 +24,7 @@ body {
   
   .navbar {
     background-color: #000000;
-    height: 50px;
+    height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,16 +63,22 @@ body {
   }
   
   .nav-links {
-    margin-left: auto;
-    position: relative; /* Add position relative to allow z-index */
-    z-index: 1; /* Add z-index to make sure nav links are on top */
-  }
-  
-  .nav-links a {
-    margin-left: 10px;
-    text-decoration: none;
-    color: black;
-  }
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    font-weight: bold;
+    color:white;
+    margin-right: 20px; /* Adjust as needed */
+}
+
+.nav-links img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
   
   .search-container {
     flex-grow: 1;
@@ -104,7 +111,7 @@ body {
 
   .post-container {
     width: 60%;
-    margin: 80px auto;
+    margin: 40px auto;
     background-color: white;
     border-radius: 20px;
     padding: 20px;
@@ -138,6 +145,46 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+    margin: 40px;
   }
+
+  
+  
+  .btn-like {
+    color: #ccc;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .btn-like:hover {
+    color: #333;
+  }
+  
+  .btn-like.liked {
+    color: #f00;
+  }
+
+  .comment-container {
+    width: 60%;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+  }
+  .comment-incontainer {
+    width: 60%;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+  }
+  .comment-content {
+    text-align: center;
+  }
+  
+  
+ 
+  
   
   
