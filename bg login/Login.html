@@ -4,60 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="Login.css">
 </head>
 
-    <nav>
-        <div>
-            <img src="images/logo.png" class="logo"width="5">
-        </div>
-        <h5 class="name">GoTravel</h5>
-    <ul>
-        <li><a style="text-decoration: none; color:white" href="#">Home</a></li>
-        <li><a style="text-decoration: none; color: white;" href="#">User123</a></li>
-    </ul>
-    <img src="images/user.png" class="user-pic">
-
-    </nav>
-
-    <title>Login</title>
-
-
-<body>
-   <div class="box">
-    <div class="container">
-
-        <div class="top">
-            <a href="http://127.0.0.1:5500/bg%20login/Sign%20up.html">
-            <span>Don't Have an account?</span></a>
-            <header>Login</header>
-        </div>
-
-        <div class="input-field">
-            <input type="text" class="input" placeholder="E-mail" id="" required>
-            <i class='bx bx-user' ></i>
-        </div>
-
-        <div class="input-field">
-            <input type="Password" class="input" placeholder="Password" id="" required>
-            <i class='bx bx-lock-alt'></i>
-        </div>
-
-        <div class="input-field">
-            <input type="submit" class="submit" value="Login" id="">
-        </div>
-
-        <div class="two-col">
-            <div class="one">
-               <input type="checkbox" name="" id="check">
-               <label for="check"> Remember Me</label>
-            </div>
-            <div class="two">
-                <label><a href="#">Forgot password?</a></label>
-            </div>
-        </div>
+<form>
+    <h1>LOG IN</h1>
+    <div class="inset br">
+    <p>
+      <label for="email">EMAIL ADDRESS</label>
+      <input type="text" name="email" id="email">
+    </p>
+    <p>
+      <label for="password">PASSWORD</label>
+      <input type="password" name="password" id="password">
+    </p>
+    <p>
+      <input type="checkbox" name="remember" id="remember">
+      <label for="remember">Remember me for 14 days</label>
+    </p>
     </div>
-</div>  
-</body>
-</html>
+    <p class="p-container">
+      <span>Forgot password?</span>
+      <input type="submit" name="go" id="go" value="Log in">
+    </p>
+  </form>
