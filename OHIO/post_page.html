@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function search() {
+          var query = document.getElementById("search-bar").value;
+          if (query !== "") {
+              window.location.href = "search.html?query=" + encodeURIComponent(query);
+          }
+      }
+    </script>
 </head>
 <body> 
 
@@ -17,11 +25,11 @@
           <h1 class="logo-text" style="color:white;" >Go-Travel</h1>
         </div>
         <div class="search-container">
-            <form action="#" method="get">
-              <label for="search">Search:</label>
-              <input type="text" id="search" name="search" placeholder="Search...">
-            </form>
-        </div>
+          <form onsubmit="search(); return false;">
+            <label for="search">Search:</label>
+            <input type="text" id="search-bar" placeholder="Search for trips, user, or blog">
+        </form>
+      </div>
         <div class="nav-links">
             <a style="font-weight: bold; color:white;" href="index.html">Home</a>
             <a style="font-weight: bold; color:white;" href="login.html">Login</a>            
