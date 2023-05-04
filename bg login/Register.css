@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
+*{
+    font-family: 'poppins' ,sans-serif;
+}
+body{
+    background-image: url("images/2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    
+}
+
+* { box-sizing: border-box; }
+
+form {
+  background: rgba(230, 226, 226, 0.3); 
+  width:350px;
+  margin:70px auto;
+  border-radius:1.5em;
+  overflow:hidden;
+  position:relative;
+  box-shadow: 0 5px 10px 5px rgba(0,0,0,0.2);
+}
+
+
+.inset {
+ 	padding:30px; 
+     
+}
+
+.h1 {
+  font-size:20px;
+  text-align:center;
+  padding-top: 20px;
+}
+
+label {
+  display:block;
+}
+
+input[type=text],
+input[type=password] {
+ 	width:100%;
+  padding:10px 10px;
+  border:1px solid #222;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.1);
+  border-radius:0.3em;
+}
+
+label[for=remember]{
+ 	color:rgb(0, 0, 0);
+  display:inline-block;
+  padding-bottom:0;
+  padding-top:0px;
+}
+
+input[type=checkbox] {
+ 	display:inline-block;
+  vertical-align:top;
+}
+
+.p-container {
+ 	padding:0px 20px 20px 20px; 
+}
+
+.p-container:after {
+ 	clear:both;
+  display:table;
+  content:"";
+}
+
+.p-container span {
+  display:block;
+  float:left;
+  color:#0d93ff;
+  padding-top:2px;
+}
+
+input[type=submit] {
+ 	padding:5px 20px;
+  border-radius:em;
+  background:#0184ff;
+  color:white;
+  float:right;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:13px;
+}
+
+
+
+input[type=text]:hover,
+input[type=password]:hover,
+label:hover ~ input[type=text],
+label:hover ~ input[type=password] {
+ 	background:#e8f3ff;
+}
+.input{
+  font-size: 15px;
+  font-family: "sans-serif";
+}
