@@ -9,29 +9,33 @@
 </head>
 
 
-    <title>Register</title>
+    <title>REGISTER</title>
 
 <body>
-    <form>
-        <div class="h1">Register</div>
+    <form action="http://127.0.0.1:5500/OHIO/post_page.html" >
+        <h1>REGISTER</h1>
         <div class="inset br">
         <p class="input">
-          <label for="email">Email</label>
-          <input type="text" name="email" id="email">
+          <label for="email">Email*</label>
+          <input type="text" name="email" id="email" required>
         </p>
         <p>
-          <label for="username">Username</label>
+          <label for="username">Username*</label>
           <input type="text" name="username" id="username" required>
         </p>
         <p>
-          <label for="password">Password</label>
+          <label for="password">Password*</label>
           <input type="password" name="password" id="password" required>
         </p>
         <p>
-            <label for="confirm password">Confirm Password</label>
+            <label for="confirm password">Confirm Password*</label>
             <input type="password" name="password" id="password" required>
           </p>
-        
+          <p class="p-container">
+            <span><a href="http://127.0.0.1:5500/bg%20login/Login.html">Back To Login</a></span>
+            <button type="submit">Create</button>
+          </p>
+
         </div>
         
       </form>
