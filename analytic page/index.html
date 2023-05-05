@@ -23,11 +23,11 @@
         </div>
         <div class="nav-links">
           <i class="bi bi-house-door text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="http://127.0.0.1:5500/OHIO/post_page_user.html">HOME</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="index.html">HOME</a>
           <i class="bi bi-plus text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="http://127.0.0.1:5500/OHIO/new_post.html">CREATE POST</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="index.html">CREATE POST</a>
           <img src="userprofile.jpg" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-          <a style="font-weight: bold; color:white; font-size:medium;" href="http://127.0.0.1:5500/ProfilePage/index.html">James19</a>
+          <a style="font-weight: bold; color:white; font-size:medium;" href="index.html">James19</a>
           <i class="bi bi-box-arrow-left text-white"></i>
           <a style="font-weight: bold; color:white; font-size:small;" href="index.html">LOG OUT</a>
         </div>
@@ -48,18 +48,18 @@
             </div>
           </div>
               <div class="col-9 col-sm-6 col-md-4 col-lg-3">
-            <div class="our-team">
+            <div style="background-color:#f99f9e;" class="our-team">
               <div class="picture">
                 <img class="img-fluid" src="heart.png">
               </div>
-              <div class="team-content">
+              <div  class="team-content">
                 <h3 class="name">19, 855</h3>
                 <h4 class="title">Total Likes</h4>
               </div>
             </div>
           </div>
               <div class="col-9 col-sm-6 col-md-4 col-lg-3">
-            <div class="our-team">
+            <div style="background-color:#bbdff9;" class="our-team">
               <div class="picture">
                 <img class="img-fluid" src="comment.png">
               </div>
@@ -87,40 +87,56 @@
         }
         .white{
             color: black;
-            margin: 40px;
-            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-weight: bolder;
+            font-size: 24px;
         }
         .chartMenu p {
           
           font-size: 20px;
           display: flex;
-          background-color: white;
         }
         .chartCard {
-          width: 98vw;
+          width: 700px;
           height: calc(100-50)px;
           display: flex;
           align-items: center;
           justify-content: center;
           background-color: rgb(255, 255, 255, 1.0);
+          margin: 0 auto;
         }
         .chartBox {
           width: 670px;
           padding: 20px;
           border-radius: 2px;
-          border: solid 3pxrgba(230, 226, 226, 0.3);
+          border: solid 3px rgba(230, 226, 226, 0.3);
           background: white;
         }
         .overview{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+          font-weight: bold;
+        }
+        .chartContainer {
+        width: 50%;
+        margin: 0 auto;
+        border-radius: 30px;
+        border: solid 3px rgba(230, 226, 226, 0.3);
+        overflow: hidden;
+        background: white;
         }
       </style>
-
+    
     <body>
-        <div class="chartMenu">
+
+      <div class="chartContainer">
             <p class="white">Overview</p>
-          </div>
-        
       <div class="chartCard">
         <div class="chartBox">
           <canvas id="myChart"></canvas>
@@ -153,11 +169,11 @@
            
           ],
           borderWidth: 1
-
+    
         }
     ]
       };
-  
+    
       // config 
       const config = {
         type: 'line',
@@ -170,30 +186,17 @@
           }
         }
       };
-  
+    
       // render init block
       const myChart = new Chart(
         document.getElementById('myChart'),
         config
       );
-  
+    
       // Instantly assign Chart.js version
       const chartVersion = document.getElementById('chartVersion');
       chartVersion.innerText = Chart.version;
       </script>
       </div>
-  
-    
-	</body>
-
-
-
-      
-
-
-
-
-
-
-
-</body>
+    </div>
+    </body>
