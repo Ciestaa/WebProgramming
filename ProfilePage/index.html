@@ -56,10 +56,11 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="card shadow-sm">
-          <i class="bi bi-pen col-md-12 text-right"></i>
+            <i class="bi bi-pen col-md-12 text-right" onclick="startNameEdit()"></i>
+          
           <div class="card-header bg-transparent text-center">
             <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp">
-            <h3>Ishmam Ahasan Samin</h3>
+            <h3 class="h2 mb-0 mr-2" contenteditable="true" id="name" onkeydown="handleNameEdit(event)">Ishmam Ahasan Samin</h3>
           </div>
           <div class="card-body">
             <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
@@ -70,7 +71,9 @@
       </div>
       <div class="col-lg-8">
         <div class="card shadow-sm">
-          <i class="bi bi-pen col-md-12 text-right"></i>
+          <div class="col-md-2">
+            <i class="bi bi-pen col-md-12 text-right" ></i>
+          </div>
           <div class="card-header bg-transparent border-0">
             <h3 class="mb-0">ABOUT</h3>
           </div>
@@ -79,29 +82,29 @@
               <tr>
                 <th width="30%">Gender</th>
                 <td width="2%">:</td>
-                <td>Male</td>
+                <td contenteditable="true" id="Gen" onkeydown="handleGenEdit(event)">Male</td>
               </tr>
               <tr>
                 <th width="30%">Phone</th>
                 <td width="2%">:</td>
-                <td>013-6789 9097</td>
+                <td contenteditable="true" id="No" onkeydown="handleNoEdit(event)">013-6789 9097</td>
               </tr>
               <tr>
                 <th width="30%">E-mail</th>
                 <td width="2%">:</td>
-                <td>ali@gmail.com</td>
+                <td contenteditable="true" id="Email" onkeydown="handleEmailEdit(event)">ali@gmail.com</td>
               </tr>
               <tr>
                 <th width="30%">Instagram</th>
                 <td width="2%">:</td>
-                <td>ali_bui</td>
+                <td contenteditable="true" id="Insta" onkeydown="handleInstaEdit(event)">ali_bui</td>
               </tr>
             </table>
           </div>
         </div>
           <div style="height: 26px"></div>
         <div class="card shadow-sm">
-          <i class="bi bi-pen col-md-12 text-right"></i>
+          <i class="bi bi-pen col-md-12 text-right" onclick="startTEEdit()"></i>
           <div class="card-header bg-transparent border-0">
             
             <h3 class="mb-0">TRAVEL EXPERIENCES</h3>
@@ -111,12 +114,12 @@
               <tr>
                 <th width="30%">Year of Experience</th>
                 <td width="2%">:</td>
-                <td>5</td>
+                <td contenteditable="true" id="TE" onkeydown="handleTEEdit(event)">5</td>
               </tr>
               <tr>
                 <th width="30%">Country</th>
                 <td width="2%">:</td>
-                <td>Malaysia, Cambodia, Singapore</td>
+                <td contenteditable="true" id="TE" onkeydown="handleCountryEdit(event)">Malaysia, Cambodia, Singapore</td>
               </tr>
             </table>
           </div>
@@ -202,5 +205,141 @@
 
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+      function startNameEdit() {
+        const nameElement = document.getElementById("name");
+        nameElement.contentEditable = "true";
+        nameElement.classList.add("border", "border-secondary");
+        nameElement.focus();
+      }
+    
+      function finishNameEdit() {
+        const nameElement = document.getElementById("name");
+        nameElement.contentEditable = "false";
+        nameElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleNameEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishNameEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const nameElement = document.getElementById("name");
+          nameElement.innerText = nameElement.dataset.originalName;
+          finishNameEdit();
+        }}
+
+        function startTEEdit() {
+        const TEElement = document.getElementById("TE");
+        TEElement.contentEditable = "true";
+        TEElement.classList.add("border", "border-secondary");
+        TEElement.focus();
+      }
+    
+      function finishTEEdit() {
+        const TEElement = document.getElementById("TE");
+        TEElement.contentEditable = "false";
+        TEElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleTEEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishTEEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const TEElement = document.getElementById("TE");
+          TEElement.innerText = TEElement.dataset.originalName;
+          finishTEEdit();
+        }}
+
+        function finishCountryEdit() {
+        const CountryElement = document.getElementById("Country");
+        CountryElement.contentEditable = "false";
+        CountryElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleCountryEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishCountryEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const CountryElement = document.getElementById("Country");
+          CountryElement.innerText = CountryElement.dataset.originalName;
+          finishCountryEdit();
+        }}
+
+        function finishEmailEdit() {
+        const EmailElement = document.getElementById("Email");
+        EmailElement.contentEditable = "false";
+        EmailElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleEmailEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishEmailEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const EmailElement = document.getElementById("Email");
+          EmailElement.innerText = EmailElement.dataset.originalName;
+          finishEmailEdit();
+        }}
+
+        function finishInstaEdit() {
+        const InstaElement = document.getElementById("Insta");
+        InstaElement.contentEditable = "false";
+        InstaElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleInstaEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishInstaEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const InstaElement = document.getElementById("Insta");
+          InstaElement.innerText = InstaElement.dataset.originalName;
+          finishInstaEdit();
+        }}
+
+        function finishNoEdit() {
+        const NoElement = document.getElementById("No");
+        NoElement.contentEditable = "false";
+        NoElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleNoEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishNoEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const NoElement = document.getElementById("No");
+          NoElement.innerText = NoElement.dataset.originalName;
+          finishNoEdit();
+        }}
+
+        function finishGenEdit() {
+        const GenElement = document.getElementById("Gen");
+        GenElement.contentEditable = "false";
+        GenElement.classList.remove("border", "border-secondary");
+      }
+    
+      function handleGenEdit(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          finishGenEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          const GenElement = document.getElementById("Gen");
+          GenElement.innerText = GenElement.dataset.originalName;
+          finishGenEdit();
+        }}
+      ;
+      
+    </script>
   </body>
 </html>
