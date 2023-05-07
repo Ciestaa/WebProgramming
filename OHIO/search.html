@@ -2,74 +2,72 @@
 <html>
 
 <head>
-    <title>Search Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="CSS/search.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function search() {
-            var query = document.getElementById("search-bar").value;
-            if (query !== "") {
-                window.location.href = "search.html?query=" + encodeURIComponent(query);
-            }
-        }
-    </script>
+  <title>Search Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="CSS/search.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function search() {
+      var query = document.getElementById("search-bar").value;
+      if (query !== "") {
+        window.location.href = "search.html?query=" + encodeURIComponent(query);
+      }
+    }
+  </script>
 </head>
 
 <body>
 
-    <div class="navbar">
-        <div style="padding-left: 3%;" class="logo-container">
-            <img src="CSS/Images/logo.png" alt="GoTravel Logo">
-            <h1 class="logo-text" style="color:white;">Go-Travel</h1>
-        </div>
-        <div class="nav-links">
-            <a style="font-weight: bold; color:white;" href="../OHIO/index.html">Home</a>
-            <a style="font-weight: bold; color:white;" href="../Login/Login.html">Login</a>
-        </div>
+  <div class="navbar">
+    <div style="padding-left: 3%;" class="logo-container">
+      <img src="CSS/Images/logo.png" alt="GoTravel Logo">
+      <h1 class="logo-text" style="color:white;">Go-Travel</h1>
     </div>
-
     <div class="search-container">
-        <form onsubmit="search(); return false;">
-            <label for="search">Search:</label>
-            <input type="text" id="search-bar" placeholder="Search for trips, user, or blog">
-        </form>
+      <form onsubmit="search(); return false;">
+        <label for="search">Search:</label>
+        <input type="text" id="search-bar" placeholder="Search for trips, user, or blog">
+      </form>
     </div>
-
-      <div class="container">
-        <a href="../OHIO/viewpost_anon.html" class="white-box">
-          <div class="box-text">
-            <h2>Bangkok</h2>
-            <p>This is a story about my trip to Bankok. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/bangkok.jpg" alt="Image description">
-          </div>
-        </a>
-      
-        <a href="../ProfilePage/index.html" class="white-box">
-          <div class="box-text">
-            <h2>Bobby</h2>
-            <p>5 years experience of travelling. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/profile.png" alt="Image description">
-          </div>
-        </a>
-      
-        <a href="../ProfilePage/index.html" class="white-box">
-          <div class="box-text">
-            <h2>Bella</h2>
-            <p>new to travelling. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/Ano_Profile.png" alt="Image description">
-          </div>
-        </a>
+    <div class="nav-links">
+      <a style="font-weight: bold; color:white;" href="../OHIO/index.html">Home</a>
+      <a style="font-weight: bold; color:white;" href="../Login/Login.html">Login</a>
+    </div>
+  </div>
+  <div class="container">
+    <a href="../OHIO/viewpost_anon.html" class="white-box">
+      <div class="box-text">
+        <h2>Bangkok</h2>
+        <p>This is a story about my trip to Bankok. . .</p>
       </div>
+      <div class="box-image">
+        <img src="CSS/Images/bangkok.jpg" alt="Image description">
+      </div>
+    </a>
+
+    <a href="../ProfilePage/index.html" class="white-box">
+      <div class="box-text">
+        <h2>Bobby</h2>
+        <p>5 years experience of travelling. . .</p>
+      </div>
+      <div class="box-image">
+        <img src="CSS/Images/profile.png" alt="Image description">
+      </div>
+    </a>
+
+    <a href="../ProfilePage/index.html" class="white-box">
+      <div class="box-text">
+        <h2>Bella</h2>
+        <p>new to travelling. . .</p>
+      </div>
+      <div class="box-image">
+        <img src="CSS/Images/Ano_Profile.png" alt="Image description">
+      </div>
+    </a>
+  </div>
 </body>
 
 
