@@ -1,6 +1,6 @@
 body {
     position: relative;
-    margin: 0;
+    margin: 10px;
     min-height: 100%;
     padding: 20;
     height: 100vh;
@@ -120,6 +120,7 @@ body {
     align-items: center;
     height: 100vh;
     flex-direction: column; /* new line */
+    padding-top: 100px;
   }
   
   .white-box {
