@@ -1,0 +1,191 @@
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  padding: 20;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(45deg, #FCDAE9, #FFC2EF, #ffafcc, #e7bbe3, #CCD5FF, #cdb4db);
+  background-size: 200% 200%;
+  background-attachment: fixed;
+  animation: color 12s ease-in-out infinite;
+}
+
+@keyframes color {
+  0% {
+    background-position: 0 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.navbar {
+  background-color: #000000;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1;
+}
+
+.navbar a {
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  padding: 0 10px;
+  /* Add padding between links */
+}
+
+.navbar a:hover {
+  background-color: #F9A5C0;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  margin: 0;
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: bold;
+  color: white;
+  margin-right: 20px;
+  /* Adjust as needed */
+}
+
+.nav-links img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+
+.search-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.search-container form {
+  display: inline-block;
+  margin: 0;
+}
+
+.search-container label {
+  display: none;
+}
+
+.search-container input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 16px;
+  width: 300px;
+  margin-right: 8px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for the form */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styles for the form labels */
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Styles for the form input fields */
+input[type="text"],
+textarea {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Styles for the form file input */
+input[type="file"] {
+  margin-bottom: 20px;
+}
+
+/* Styles for the form submit button */
+button {
+  padding: 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+/* Increase the size of the form fields and button */
+@media screen and (min-width: 500px) {
+  .container {
+    padding: 100px;
+  }
+
+  input[type="text"],
+  textarea {
+    padding: 40px;
+    font-size: 24px;
+  }
+
+  button {
+    padding: 40px;
+    font-size: 24px;
+  }
+}
