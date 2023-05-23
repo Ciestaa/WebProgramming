@@ -1,3 +1,26 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to the login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: index.php");
+    exit;
+}
+
+// Get the username from your session or database
+$username = $_SESSION["username"]; // Replace with the appropriate variable storing the username
+
+if(isset($_POST["logout"])){
+  // Clear the session and redirect to the login page
+  session_unset();
+  session_destroy();
+  header("location: index.php");
+  exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,8 +43,7 @@
     </script>
 
 </head>
-<body> 
-
+<body>
     <div class="navbar">
         <div style="padding-left: 3%;"class="logo-container">
           <img src="CSS/Images/logo.png" alt="GoTravel Logo">
@@ -39,14 +61,16 @@
           <i class="bi bi-plus text-white"></i>
           <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
           <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-          <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+          <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html"><?php echo htmlspecialchars($username); ?></a>
           <i class="bi bi-box-arrow-left text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">LOG OUT</a>
+          <form id="logout-form" method="post" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+          </form>
         </div>
         
     </div>
-      
-    
+
     <div class="post-section">
         <div class="post-container">
             <div class="post-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -79,7 +103,7 @@
             <br>
             <a style="color:black" href="../OHIO/viewpost_user.html">View blog</a>
           </div>  
-     </div>
+    </div>
         
 
 </body>
