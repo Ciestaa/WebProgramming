@@ -1,18 +1,25 @@
 <?php
-
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to user post page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: ../OHIO/post_page_user.php");
+// Check if the user is already logged in, if yes then redirect him to the user post page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === false){
+    header("location: ../OHIO/index.php");
     exit;
 }
 
 // Include config file
 require_once "../PHP/config.php";
 
-$location = $story = $image = "";
+// Create a new mysqli object
+$mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+// Check the connection
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+
+$location = $title = $description = $image = "";
 $post_err = "";
 
 // Processing form data when form is submitted
@@ -22,21 +29,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["title"]))){
         $post_err = "Please enter your story title.";
     } else{
-        $email = trim($_POST["title"]);
+        $title = trim($_POST["title"]);
     }
     
     // Check if story is empty
     if(empty(trim($_POST["story"]))){
         $post_err = "Please enter your story.";
     } else{
-        $password = trim($_POST["story"]);
+        $description = trim($_POST["story"]);
     }
     
     // Check if location is empty
     if(empty(trim($_POST["location"]))){
         $post_err = "Please enter your location.";
     } else{
-        $password = trim($_POST["location"]);
+        $location = trim($_POST["location"]);
     }
 
     // Check if image file is uploaded
@@ -60,32 +67,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check if there are no errors before inserting data into the database
-    if(empty($post_err)){
+    if (empty($post_err)) {
         // Prepare an insert statement
-        $sql = "INSERT INTO posts (location, title, description, image) VALUES (?, ?, ?, ?)";
-        
-        if($stmt = $mysqli->prepare($sql)){
+        $sql = "INSERT INTO posts (Username, Title, Description, Image, Location) VALUES (?, ?, ?, ?, ?)";
+
+        if ($stmt = $mysqli->prepare($sql)) { // <-- Replace $conn with $mysqli
             // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("ssss", $location, $title, $description, $image);
-            
+            $stmt->bind_param("sssss", $username, $title, $description, $image, $location);
+
+            // Set the username parameter
+            $username = $_SESSION["username"];
+
             // Execute the prepared statement
-            if($stmt->execute()){
+            if ($stmt->execute()) {
                 // Redirect to the post page or display a success message
                 header("location: ../OHIO/post_page_user.php");
                 exit;
-            } else{
+            } else {
                 $post_err = "Something went wrong. Please try again later.";
             }
-            
+
             // Close the statement
             $stmt->close();
         }
     }
-    
-    // Close the database connection
-    $mysqli->close();
-}
 
+    // Close the database connection
+    $mysqli->close(); // <-- Replace $conn with $mysqli
+}
 ?>
 
 <!DOCTYPE html>
