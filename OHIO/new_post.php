@@ -207,7 +207,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <div class="container">
         <h1>Make a post about your breathtaking travel</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
 
         <label for="title">Enter your travel story title here:</label>
         <textarea id="title" name="title" required></textarea>
