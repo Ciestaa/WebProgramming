@@ -55,6 +55,7 @@ if(isset($_POST["logout"])){
             <input type="text" id="search-bar" placeholder="Search for trips, user, or blog">
         </form>
       </div>
+      <div id="dynamic-content"></div>
         <div class="nav-links">
           <i class="bi bi-house-door text-white"></i>
           <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
@@ -105,7 +106,22 @@ if(isset($_POST["logout"])){
           </div>  
     </div>
         
+    <script>
+    // Get a reference to the dynamic content element
+    const dynamicContent = document.getElementById('dynamic-content');
 
+    // Fetch data from an API (replace 'api-url' with your actual API endpoint)
+    fetch('api-url')
+      .then(response => response.json())
+      .then(data => {
+        // Update the dynamic content with the fetched data
+        dynamicContent.textContent = JSON.stringify(data);
+      })
+      .catch(error => {
+        // Handle any errors that occurred during the fetch
+        console.error('Error:', error);
+      });
+  </script>
 </body>
 
   
