@@ -19,6 +19,29 @@ if(isset($_POST["logout"])){
   exit;
 }
 
+require_once "config.php"; // Include the database connection configuration
+
+// Fetch all posts from the database
+$sql = "SELECT * FROM posts";
+$result = $mysqli->query($sql);
+
+// Check if any posts are found
+if ($result->num_rows > 0) {
+    // Iterate over the result set and display each post
+    while ($row = $result->fetch_assoc()) {
+        $postUsername = $row['Username'];
+        $postTitle = $row['Title'];
+        $postDescription = $row['Description'];
+        $postImage = $row['Image'];
+        $postLocation = $row['Location'];
+
+    }
+} else {
+    $post_err = "No posts found.";
+}
+
+$mysqli->close(); // Close the database connection
+
 ?>
 
 <!DOCTYPE html>
