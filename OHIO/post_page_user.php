@@ -20,9 +20,6 @@ if(isset($_POST["logout"])){
 }
 
 
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -106,7 +103,7 @@ if(isset($_POST["logout"])){
         if ($result->num_rows > 0) {
           // Loop through the rows and access each post detail
           while ($row = $result->fetch_assoc()) {
-            $no = $row['No'];
+            $postID = $row['postID'];
             $usernamePOST = $row['Username'];
             $title = $row['Title'];
             $description = $row['Description'];
@@ -124,7 +121,7 @@ if(isset($_POST["logout"])){
             echo '<p style="text-align: justify;">' . $description . '</p>';
             echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
             echo '<br>';
-            echo '<a style="color:black" href="../OHIO/viewpost_user.html">View blog</a>';
+            echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $postID . '">View blog</a>';
             echo '</div>';
           }
         } else {
@@ -166,7 +163,7 @@ if(isset($_POST["logout"])){
         });
     }
 </script>
-       
+
 </body>
 
   
