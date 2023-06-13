@@ -106,9 +106,7 @@ if (isset($_POST["logout"])) {
       echo "Invalid post ID.";
   }
   ?>
-    </div>
-
-    <div class="rating-container">
+  <div class="rating-container">
       <h5>Rate this blog:</h5>
       <div class="rating">
         <span class="star" data-rating="1">&#9733;</span>
@@ -147,6 +145,9 @@ if (isset($_POST["logout"])) {
             <p style="margin-left: 60px;">Im handsome</p>
         </div>
     </div>
+    </div>
+
+    
     
     
 </body>
