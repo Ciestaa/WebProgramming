@@ -9,7 +9,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 // Get the username from your session or database
-$username = $_SESSION["username"]; // Replace with the appropriate variable storing the username
+$username = $_SESSION["username"];
+// Define variables for the form fields
+$comment = "";
 
 if (isset($_POST["logout"])) {
     // Clear the session and redirect to the login page
@@ -29,8 +31,8 @@ if (isset($_POST['rating'])) {
         die('Connection failed: ' . $conn->connect_error);
     }
 
-    // Get the post ID and username
-    $postID = $_POST['post_id']; // Replace with the appropriate variable storing the post ID
+    // Get the post ID
+    $postID = $_POST['post_id'];
 
     // Check if the user has already rated the post
     $checkSql = "SELECT * FROM rating WHERE postID = '$postID' AND Username = '$username'";
@@ -60,6 +62,34 @@ if (isset($_POST['rating'])) {
     $conn->close(); // Close the database connection
     exit; // Stop further execution of the PHP code
 }
+
+if (isset($_POST['comment'])) {
+    $comment = $_POST['comment'];
+
+    // Add your database connection code here
+    $conn = new mysqli('localhost', 'root', '', 'gotravel');
+
+    if ($conn->connect_error) {
+        die('Connection failed: ' . $conn->connect_error);
+    }
+
+    // Get the post ID
+    $postID = $_POST['post_id'];
+
+    // Insert the comment into the database
+    $insertCommentSql = "INSERT INTO comment (postID, Username, Comment) VALUES ('$postID', '$username', '$comment')";
+    $insertCommentResult = $conn->query($insertCommentSql);
+
+    if ($insertCommentResult === true) {
+        $comMes = "Comment inserted successfully";
+
+        // Clear the form after inserting the comment
+        $comment = ""; // Clear the comment field
+    } else {
+        $comMes = "Error inserting comment: " . $conn->error;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +111,7 @@ if (isset($_POST['rating'])) {
             if (query !== "") {
                 window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
             }
-      }
+        }
     </script>
 </head>
 <body> 
@@ -113,86 +143,89 @@ if (isset($_POST['rating'])) {
     </div>
       
     <div class="post-section">
-    <?php
-  if (isset($_GET['post_id'])) {
-      $postID = $_GET['post_id'];
+        <?php
+        if (isset($_GET['post_id'])) {
+            $postID = $_GET['post_id'];
 
-      // Add your database connection code here
-      $conn = new mysqli('localhost', 'root', '', 'gotravel');
-      if ($conn->connect_error) {
-          die('Connection failed: ' . $conn->connect_error);
-      }
+            // Add your database connection code here
+            $conn = new mysqli('localhost', 'root', '', 'gotravel');
+            if ($conn->connect_error) {
+                die('Connection failed: ' . $conn->connect_error);
+            }
 
-      // Fetch the post details using the provided post ID
-      $sql = "SELECT * FROM posts WHERE postID = $postID";
-      $result = $conn->query($sql);
+            // Fetch the post details using the provided post ID
+            $sql = "SELECT * FROM posts WHERE postID = $postID";
+            $result = $conn->query($sql);
 
-      if ($result->num_rows > 0) {
-          // Display the post details
-          while ($row = $result->fetch_assoc()) {
-              $title = $row['Title'];
-              $description = $row['Description'];
-              $image = $row['Image'];
-              $location = $row['Location'];
+            if ($result->num_rows > 0) {
+                // Display the post details
+                while ($row = $result->fetch_assoc()) {
+                    $title = $row['Title'];
+                    $description = $row['Description'];
+                    $image = $row['Image'];
+                    $location = $row['Location'];
 
-              // Display the post details here
-              echo '<div class="post-container">';
-              echo '<h2>' . $title . '</h2>';
-              echo '<p>' . $description . '</p>';
-              echo '<img src="' . $image . '" alt="Post Image">';
-              echo '</div>';
-          }
-      } else {
-          echo "Post not found.";
-      }
+                    // Display the post details here
+                    echo '<div class="post-container">';
+                    echo '<h2>' . $title . '</h2>';
+                    echo '<p>' . $description . '</p>';
+                    echo '<img src="' . $image . '" alt="Post Image">';
+                    echo '</div>';
+                }
+            } else {
+                echo "Post not found.";
+            }
 
-      $conn->close(); // Close the database connection
-  } else {
-      echo "Invalid post ID.";
-  }
-  ?>
-    <div class="rating-container">
-        <h5>Rate this blog:</h5>
-        <form id="rating-form" method="post">
-            <div class="rating">
-                <span class="star" data-rating="1">&#9733;</span>
-                <span class="star" data-rating="2">&#9733;</span>
-                <span class="star" data-rating="3">&#9733;</span>
-                <span class="star" data-rating="4">&#9733;</span>
-                <span class="star" data-rating="5">&#9733;</span>
+            $conn->close(); // Close the database connection
+        } else {
+            echo "Invalid post ID.";
+        }
+        ?>
+        <div class="rating-container">
+            <h5>Rate this blog:</h5>
+            <form id="rating-form" method="post">
+                <div class="rating">
+                    <span class="star" data-rating="1">&#9733;</span>
+                    <span class="star" data-rating="2">&#9733;</span>
+                    <span class="star" data-rating="3">&#9733;</span>
+                    <span class="star" data-rating="4">&#9733;</span>
+                    <span class="star" data-rating="5">&#9733;</span>
+                </div>
+                <input type="hidden" id="rating-value" name="rating" value="0">
+                <input type="hidden" id="post-id" value="<?php echo $postID; ?>">
+            </form>
+        </div>
+
+        <div class="comment-container">
+            <h5>Comments</h2>
+            <div class="comment-incontainer">
+                <form id="comment-form" method="post">
+                    <label for="comment">Add comment:</label>
+                    <br>
+                    <textarea cols="110" rows="3" id="comment" name="comment" required style="width: 100%; box-sizing: border-box;"><?php echo htmlspecialchars($comment); ?></textarea><br>
+                    <input type="hidden" id="post-id" value="<?php echo $postID; ?>">
+                    <input type="submit" value="Submit">
+                </form>
             </div>
-            <input type="hidden" id="rating-value" name="rating" value="0">
-            <input type="hidden" id="post-id" value="<?php echo $postID; ?>">
-        </form>
-    </div>
-
-    <div class="comment-container">
-        <h5>Comments</h2>
-        <div class="comment-incontainer">
-            <label for="Add_comment">Add comment:</label>
-            <br>
-            <textarea cols="110" rows="3" id="textarea" required style="width: 100%; box-sizing: border-box;""></textarea><br>
-            <input type="submit" value="Submit" />
+            <div class="comment-incontainer">
+                <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
+                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">User123</h6>
+                <br>
+                <p style="margin-left: 60px;">Wow this place is good! I think i will go here with my  family soon</p>
+            </div> 
+            <div class="comment-incontainer">
+                <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
+                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
+                <br>
+                <p style="margin-left: 60px;">Im handsome</p>
+            </div> 
+            <div class="comment-incontainer">
+                <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
+                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
+                <br>
+                <p style="margin-left: 60px;">Im handsome</p>
+            </div>
         </div>
-        <div class="comment-incontainer">
-            <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-            <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">User123</h6>
-            <br>
-            <p style="margin-left: 60px;">Wow this place is good! I think i will go here with my  family soon</p>
-        </div> 
-        <div class="comment-incontainer">
-            <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-            <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
-            <br>
-            <p style="margin-left: 60px;">Im handsome</p>
-        </div> 
-        <div class="comment-incontainer">
-            <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-            <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
-            <br>
-            <p style="margin-left: 60px;">Im handsome</p>
-        </div>
-    </div>
     </div>
     
 </body>

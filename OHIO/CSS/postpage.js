@@ -47,4 +47,38 @@ document.addEventListener('DOMContentLoaded', function() {
       xhr.send(params);
     });
   });
+
+  document.getElementById('comment-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    var comment = document.getElementById('comment').value;
+    var postID = document.getElementById('post-id').value;
+
+    // Send AJAX request to insert the comment into the database
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'viewpost_user.php'); // Modify the URL to the appropriate endpoint
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        // Handle the success response here
+        // Clear the comment textarea
+        document.getElementById('comment').value = '';
+      } else {
+        console.error('Error inserting comment: ' + xhr.statusText);
+        // Handle the error response here
+      }
+    };
+    var params = 'comment=' + encodeURIComponent(comment) + '&post_id=' + encodeURIComponent(postID);
+    xhr.send(params);
+  });
+
+  // Get the like button element
+  //const likeBtn = document.querySelector('.btn-like');
+
+  // Add a click event listener to the like button
+  //likeBtn.addEventListener('click', function() {
+    // Toggle the 'liked' class to change the heart icon color
+    //this.classList.toggle('liked');
+  //});
 });
