@@ -18,6 +18,48 @@ if (isset($_POST["logout"])) {
     header("location: index.php");
     exit;
 }
+
+if (isset($_POST['rating'])) {
+    $rating = $_POST['rating'];
+
+    // Add your database connection code here
+    $conn = new mysqli('localhost', 'root', '', 'gotravel');
+
+    if ($conn->connect_error) {
+        die('Connection failed: ' . $conn->connect_error);
+    }
+
+    // Get the post ID and username
+    $postID = $_POST['post_id']; // Replace with the appropriate variable storing the post ID
+
+    // Check if the user has already rated the post
+    $checkSql = "SELECT * FROM rating WHERE postID = '$postID' AND Username = '$username'";
+    $checkResult = $conn->query($checkSql);
+
+    $updateSql = "UPDATE rating SET Rating = '$rating' WHERE postID = '$postID' AND Username = '$username'";
+    $insertSql = "INSERT INTO rating (postID, Username, Rating) VALUES ('$postID', '$username', '$rating')";
+
+    if ($checkResult->num_rows > 0) {
+        // User has already rated the post, update the existing rating
+        $updateResult = $conn->query($updateSql);
+        if ($updateResult === true) {
+            echo "Rating updated successfully";
+        } else {
+            echo "Error updating rating: " . $conn->error;
+        }
+    } else {
+        // User has not rated the post yet, insert a new rating
+        $insertResult = $conn->query($insertSql);
+        if ($insertResult === true) {
+            echo "Rating inserted successfully";
+        } else {
+            echo "Error inserting rating: " . $conn->error;
+        }
+    }
+
+    $conn->close(); // Close the database connection
+    exit; // Stop further execution of the PHP code
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,11 +76,11 @@ if (isset($_POST["logout"])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <script>
-      function search() {
-          var query = document.getElementById("search-bar").value;
-          if (query !== "") {
-              window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
-          }
+        function search() {
+            var query = document.getElementById("search-bar").value;
+            if (query !== "") {
+                window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
+            }
       }
     </script>
 </head>
@@ -56,15 +98,18 @@ if (isset($_POST["logout"])) {
         </form>
       </div>
       <div class="nav-links">
-        <i class="bi bi-house-door text-white"></i>
-        <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.html">HOME</a>
-        <i class="bi bi-plus text-white"></i>
-        <a style="font-weight: bold; color:white; font-size:small;" href="index.html">CREATE POST</a>
-        <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-        <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
-        <i class="bi bi-box-arrow-left text-white"></i>
-        <a style="font-weight: bold; color:white; font-size:small;" href="index.html">LOG OUT</a>
-      </div>
+          <i class="bi bi-house-door text-white"></i>
+          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
+          <i class="bi bi-plus text-white"></i>
+          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
+          <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
+          <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
+          <i class="bi bi-box-arrow-left text-white"></i>
+          <a style="font-weight: bold; color:white; font-size:small;" href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">LOG OUT</a>
+          <form id="logout-form" method="post" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+          </form>
+        </div>
     </div>
       
     <div class="post-section">
@@ -106,17 +151,20 @@ if (isset($_POST["logout"])) {
       echo "Invalid post ID.";
   }
   ?>
-  <div class="rating-container">
-      <h5>Rate this blog:</h5>
-      <div class="rating">
-        <span class="star" data-rating="1">&#9733;</span>
-        <span class="star" data-rating="2">&#9733;</span>
-        <span class="star" data-rating="3">&#9733;</span>
-        <span class="star" data-rating="4">&#9733;</span>
-        <span class="star" data-rating="5">&#9733;</span>
-      </div>
+    <div class="rating-container">
+        <h5>Rate this blog:</h5>
+        <form id="rating-form" method="post">
+            <div class="rating">
+                <span class="star" data-rating="1">&#9733;</span>
+                <span class="star" data-rating="2">&#9733;</span>
+                <span class="star" data-rating="3">&#9733;</span>
+                <span class="star" data-rating="4">&#9733;</span>
+                <span class="star" data-rating="5">&#9733;</span>
+            </div>
+            <input type="hidden" id="rating-value" name="rating" value="0">
+            <input type="hidden" id="post-id" value="<?php echo $postID; ?>">
+        </form>
     </div>
-    
 
     <div class="comment-container">
         <h5>Comments</h2>
@@ -146,12 +194,8 @@ if (isset($_POST["logout"])) {
         </div>
     </div>
     </div>
-
-    
-    
     
 </body>
 
-  
 </html>
         
