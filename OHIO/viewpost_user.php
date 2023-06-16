@@ -163,12 +163,17 @@ if (isset($_POST['comment'])) {
             if ($result->num_rows > 0) {
                 // Display the post details
                 while ($row = $result->fetch_assoc()) {
+                    $usernamePost = $row['Username'];
                     $title = $row['Title'];
                     $description = $row['Description'];
                     $image = $row['Image'];
                     $location = $row['Location'];
 
                     // Display the post details here
+                    echo '<img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
+                    echo '<h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">'.$usernamePost.'</h6>';
+                    echo '<br>';
+                    echo '<p style="margin-left: 60px;">'. $location .'</p>';
                     echo '<h2>' . $title . '</h2>';
                     echo '<p>' . $description . '</p>';
                     if($image != null)
@@ -203,6 +208,46 @@ if (isset($_POST['comment'])) {
                 <input type="hidden" id="rating-value" name="rating" value="0">
                 <input type="hidden" id="post-id" value="<?php echo $postID; ?>">
             </form>
+
+            <?php
+            if (isset($_GET['post_id'])) {
+            $postID = $_GET['post_id'];
+
+            $conn = new mysqli('localhost', 'root', '', 'gotravel');
+            if ($conn->connect_error) {
+                die('Connection failed: ' . $conn->connect_error);
+            }
+            $sql = "SELECT * FROM rating";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $ratingCollect = [];
+            // Loop through the rows and access each post detail
+                while ($row = $result->fetch_assoc()) {
+                    $PostIDRating = $row['postID'];
+                    $usernameRating = $row['Username'];
+                    $ratingvalue = $row['Rating'];
+
+                    
+
+                    $encodedUsername = htmlspecialchars($username);
+
+                    if (($PostIDRating == $postID) && ($usernameRating == $encodedUsername)) {
+                        echo '<h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">You have rated '.$ratingvalue.' star(s) for this blog</h6>';
+                    }
+
+                    if ($PostIDRating == $postID) {
+                        $ratingCollect[] = $ratingvalue;
+                        
+                    }
+                }
+                if($ratingCollect != null)
+                {$ratingSum = array_sum($ratingCollect);
+                    $averageRating = $ratingSum / count($ratingCollect);
+                    echo "Overall Ratings: " . $averageRating . " Star(s)";}
+        
+        }
+    }
+            ?>
         </div>
 
         <div class="comment-container">

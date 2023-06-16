@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function search() {
             var query = document.getElementById("search-bar").value;
@@ -46,38 +47,61 @@
         <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
     </div>
   </div>
+<div class="container">
+<?php
+      $conn = new mysqli('localhost', 'root', '', 'gotravel');
+      if ($conn->connect_error) {
+        die('Connection failed: ' . $conn->connect_error);
+      }
 
-    <div class="container">
-        <a href="../OHIO/viewpost_user.html" class="white-box">
-          <div class="box-text">
-            <h2>Bangkok</h2>
-            <p>This is a story about my trip to Bankok. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/bangkok.jpg" alt="Image description">
-          </div>
-        </a>
-      
-        <a href="../ProfilePage/index.html" class="white-box">
-          <div class="box-text">
-            <h2>Bobby</h2>
-            <p>5 years experience of travelling. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/profile.png" alt="Image description">
-          </div>
-        </a>
-      
-        <a href="../ProfilePage/index.html" class="white-box">
-          <div class="box-text">
-            <h2>Bella</h2>
-            <p>new to travelling. . .</p>
-          </div>
-          <div class="box-image">
-            <img src="CSS/Images/Ano_Profile.png" alt="Image description">
-          </div>
-        </a>
-      </div>
+      function fetchPosts($conn) {
+        // Fetch post details with offset and limit
+        $sql = "SELECT * FROM posts ORDER BY postID DESC";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+          // Loop through the rows and access each post detail
+          while ($row = $result->fetch_assoc()) {
+            $PostID = $row['postID'];
+            $usernamePOST = $row['Username'];
+            $title = $row['Title'];
+            $description = $row['Description'];
+            $image = $row['Image'];
+            $location = $row['Location'];
+
+            // Display the post details here
+            
+              echo'<a href="../OHIO/viewpost_user.php?post_id=' . $PostID . '" class="white-box">';
+                echo'<div class="box-text">';
+                  echo'<h2>'.$title.'</h2>';
+                  echo'<p>' . truncateText($description, 100) . '</p>';
+                echo'</div>';
+                echo'<div class="box-image">';
+                  if($image != null)
+                    { 
+                      echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
+                      echo '<br>';
+                    }
+                echo'</div>';
+              echo'</a>';
+            
+          }
+        } else {
+          echo "No posts found.";
+        }
+      }
+      function truncateText($text, $limit) {
+        if (strlen($text) > $limit) {
+            $truncated = substr($text, 0, $limit);
+            return $truncated . '...';
+        }
+        return $text;
+      }
+
+      // Fetch the first 10 post details
+      fetchPosts($conn);
+      ?>
+</div>
 </body>
 
 

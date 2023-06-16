@@ -1,77 +1,3 @@
-<?php
-// Initialize the session
-session_start();
-
-// Check if the user is logged in, if not then redirect him to the login page
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: index.php");
-    exit;
-}
-
-// Get the username from your session or database
-$username = $_SESSION["username"];
-
-if (isset($_POST["logout"])) {
-    // Clear the session and redirect to the login page
-    session_unset();
-    session_destroy();
-    header("location: index.php");
-    exit;
-}
-
-// Add your database connection code here
-$conn = new mysqli('localhost', 'root', '', 'gotravel');
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
-}
-
-// Fetch the post details using the provided post ID
-$sql = "SELECT * FROM userdetail WHERE Username = '$username'";
-$sql2 = "SELECT * FROM user WHERE Username = '$username'";
-$result = $conn->query($sql);
-$result2 = $conn->query($sql2);
-
-if ($result->num_rows > 0) {
-    // Loop through each row and fetch the data 
-    while ($row = $result->fetch_assoc()) {
-        // Access the data using column names
-        $fullName = $row["FullName"];
-        $gender = $row["Gender"];
-        $phoneNo = $row["PhoneNo"];
-        $instagram = $row["Instagram"];
-        $yearTravel = $row["YearTravel"];
-        $countryTravel = $row["CountryTravel"];
-        $ProfilePic =$row['ProfilePic'];
-
-        // Retrieve other column values here
-
-        // Do something with the data
-        // ...
-    }
-} else {
-    // No rows returned
-    // Handle the case when no user details are found
-}
-
-if ($result2->num_rows > 0) {
-  // Loop through each row and fetch the data 
-  while ($row = $result2->fetch_assoc()) {
-      // Access the data using column names
-      $email = $row["Email"];
-
-      // Retrieve other column values here
-
-      // Do something with the data
-      // ...
-  }
-} else {
-  // No rows returned
-  // Handle the case when no user details are found
-}
-
-$conn->close();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -239,6 +165,7 @@ $conn->close();
       <h4 class="mb-0 text-center">MY BLOG</h4>
 
   <body>
+
     <div class="container swiper">
       <div class="slide-container">
         <div class="card-wrapper swiper-wrapper">
@@ -297,7 +224,7 @@ $conn->close();
             <div class="profile-details">
               <img src="images/profile/userprofile.jpg" alt="" />
               <div class="name-job">
-                <h3 class="name">Love the scenery here</h3>
+                <h3 class="name">Love the scenary here</h3>
                 <h4 class="job">10 January, 2023</h4>
               </div>
             </div>
@@ -309,28 +236,6 @@ $conn->close();
       <div class="swiper-pagination"></div>
     </div>
 
-<script>
-  function confirmDeleteAccount() {
-  const username = prompt("Please enter your username to confirm account deletion:");
-  if (username) {
-    deleteAccount(username);
-  }
-}
-
-function deleteAccount(username) {
-  // Send an AJAX request to the server-side PHP script to handle the account deletion
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "delete_account.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      alert(xhr.responseText); // Display the response from the server
-      // You can redirect the user to another page here if needed
-    }
-  };
-  xhr.send("username=" + encodeURIComponent(username));
-}
-</script>
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
     <script>
