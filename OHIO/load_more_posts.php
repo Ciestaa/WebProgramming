@@ -36,9 +36,6 @@ if (isset($_POST['offset']) && isset($_POST['limit'])) {
             echo '<div class="post-container">';
             echo '<div class="post-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">';
             echo '<h2>' . $title . '</h2>';
-            echo '<button class="btn btn-like">';
-            echo '<i class="far fa-heart"></i>';
-            echo '</button>';
             echo '</div>';
             echo '<p style="text-align: justify;">' . limitWords($description, 100) . '</p>';
             if($image != null)

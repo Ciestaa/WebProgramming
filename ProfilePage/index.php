@@ -1,3 +1,27 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to the login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.php");
+    exit;
+}
+
+// Get the username from your session or database
+$username = $_SESSION["username"];
+// Define variables for the form fields
+$comment = "";
+
+if (isset($_POST["logout"])) {
+    // Clear the session and redirect to the login page
+    session_unset();
+    session_destroy();
+    header("location: index.php");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,7 +69,7 @@
       <i class="bi bi-plus text-white"></i>
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
       <img src="images/profile/userprofile.jpg" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-      <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+      <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html"><?php echo htmlspecialchars($username); ?></a>
       <i class="bi bi-box-arrow-left text-white"></i>
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
     </div>
@@ -159,76 +183,77 @@
       <h4 class="mb-0 text-center">MY BLOG</h4>
 
   <body>
+
     <div class="container swiper">
       <div class="slide-container">
         <div class="card-wrapper swiper-wrapper">
-          <div class="card swiper-slide">
-            <div class="image-box">
-              <a href="../OHIO/editPost.html"><img src="images/showImg/Paris.jpg" alt="" /></a>
-            </div>
-            <div class="profile-details">
-              <img src="images/profile/userprofile.jpg" alt="" /></a>
-              <div class="name-job">
-                <h3 class="name">Trip to Bangkok</h3>
-                <h4 class="job">5 February, 2021</h4>
-              </div>
-            </div>
-          </div>
-          <div class="card swiper-slide">
-            <div class="image-box">
-              <img src="images/showImg/Paris2.jpg" alt="" />
-            </div>
-            <div class="profile-details">
-              <img src="images/profile/userprofile.jpg" alt="" />
-              <div class="name-job">
-                <h3 class="name">A day in Paris</h3>
-                <h4 class="job">19 November, 2021</h4>
-              </div>
-            </div>
-          </div>
-          <div class="card swiper-slide">
-            <div class="image-box">
-              <img src="images/showImg/London.jpg" alt="" />
-            </div>
-            <div class="profile-details">
-              <img src="images/profile/userprofile.jpg" alt="" />
-              <div class="name-job">
-                <h3 class="name">Family trip to Seoul</h3>
-                <h4 class="job">18 June, 2022</h4>
-              </div>
-            </div>
-          </div>
-          <div class="card swiper-slide">
-            <div class="image-box">
-              <img src="images/showImg/Paris 3.jpg" alt="" />
-            </div>
-            <div class="profile-details">
-              <img src="images/profile/userprofile.jpg" alt="" />
-              <div class="name-job">
-                <h3 class="name">Love Paris</h3>
-                <h4 class="job">31 August, 1987</h4>
-              </div>
-            </div>
-          </div>
-          <div class="card swiper-slide">
-            <div class="image-box">
-              <img src="images/showImg/Seoul.jpg" alt="" />
-            </div>
-            <div class="profile-details">
-              <img src="images/profile/userprofile.jpg" alt="" />
-              <div class="name-job">
-                <h3 class="name">Love the scenary here</h3>
-                <h4 class="job">10 January, 2023</h4>
-              </div>
-            </div>
-          </div>
+        <?php
+        $conn = new mysqli('localhost', 'root', '', 'gotravel');
+        if ($conn->connect_error) {
+          die('Connection failed: ' . $conn->connect_error);
+        }
+
+        function fetchPosts($conn) {
+          // Fetch post details with offset and limit
+          $sql = "SELECT * FROM posts ORDER BY postID DESC";
+          $result = $conn->query($sql);
+
+          if ($result->num_rows > 0) {
+            // Loop through the rows and access each post detail
+            while ($row = $result->fetch_assoc()) {
+              $PostID = $row['postID'];
+              $usernamePOST = $row['Username'];
+              $title = $row['Title'];
+              $description = $row['Description'];
+              $image = $row['Image'];
+              $location = $row['Location'];
+              
+              if($usernamePOST == $_SESSION["username"]){
+              // Display the post details here
+                  echo '<div class="card swiper-slide">';
+                  echo '<div class="image-box">';
+                  if($image != null)
+                  {
+                    echo '<a href="../OHIO/viewpost_user.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                  }
+                  elseif ($image== null) {
+                    echo '<a href="../OHIO/viewpost_user.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
+                  }
+                  echo '</div>';
+                  echo '<div class="profile-details">';
+                  echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
+                  echo '<div class="name-job">';
+                  echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
+                  echo '<h4 class="job">5 February, 2021</h4>';
+                  echo '<h4 class="job">'.$location.'</h4>';
+                  echo '</div>';
+                  echo '</div>';
+                  echo '</div>';
+                }
+            }
+          } else {
+            echo "No posts found.";
+          }
+        }
+        function truncateText($text, $limit) {
+          if (strlen($text) > $limit) {
+              $truncated = substr($text, 0, $limit);
+              return $truncated . '...';
+          }
+          return $text;
+        }
+
+        // Fetch the first 10 post details
+        fetchPosts($conn);
+        ?>
         </div>
       </div>
       <div class="swiper-button-next swiper-navBtn"></div>
       <div class="swiper-button-prev swiper-navBtn"></div>
       <div class="swiper-pagination"></div>
     </div>
-
+    
+    
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
     <script>

@@ -42,7 +42,7 @@ if(isset($_POST["logout"])){
       function search() {
             var query = document.getElementById("search-bar").value;
             if (query !== "") {
-                window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
+                window.location.href = "../OHIO/searchUser.php?query=" + encodeURIComponent(query);
             }
         }
 
@@ -88,54 +88,58 @@ if(isset($_POST["logout"])){
     </div>
 
     <div class="post-section">
-    <div id="post-container">
-        <?php
-      $conn = new mysqli('localhost', 'root', '', 'gotravel');
-      if ($conn->connect_error) {
-        die('Connection failed: ' . $conn->connect_error);
-      }
-
-      function fetchPosts($conn, $offset, $limit) {
-        // Fetch post details with offset and limit
-        $sql = "SELECT * FROM posts ORDER BY postID DESC LIMIT $offset, $limit";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-          // Loop through the rows and access each post detail
-          while ($row = $result->fetch_assoc()) {
-            $PostID = $row['postID'];
-            $usernamePOST = $row['Username'];
-            $title = $row['Title'];
-            $description = $row['Description'];
-            $image = $row['Image'];
-            $location = $row['Location'];
-
-            // Display the post details here
-            echo '<div class="post-container">';
-            echo '<div class="post-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">';
-            echo '<h2>' . $title . '</h2>';
-            echo '<button class="btn btn-like">';
-            echo '<i class="far fa-heart"></i>';
-            echo '</button>';
-            echo '</div>';
-            echo '<p style="text-align: justify;">' . $description . '</p>';
-            if($image != null)
-            { 
-              echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
-              echo '<br>';
-            }
-            echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $PostID . '">View blog</a>';
-            echo '</div>';
-          }
-        } else {
-          echo "No posts found.";
+      <div id="post-container">
+          <?php
+        $conn = new mysqli('localhost', 'root', '', 'gotravel');
+        if ($conn->connect_error) {
+          die('Connection failed: ' . $conn->connect_error);
         }
-      }
 
-      // Fetch the first 10 post details
-      fetchPosts($conn, 0, 10);
-      ?>
-    </div>
+        function fetchPosts($conn, $offset, $limit) {
+          // Fetch post details with offset and limit
+          $sql = "SELECT * FROM posts ORDER BY postID DESC LIMIT $offset, $limit";
+          $result = $conn->query($sql);
+
+          if ($result->num_rows > 0) {
+            // Loop through the rows and access each post detail
+            while ($row = $result->fetch_assoc()) {
+              $PostID = $row['postID'];
+              $usernamePOST = $row['Username'];
+              $title = $row['Title'];
+              $description = $row['Description'];
+              $image = $row['Image'];
+              $location = $row['Location'];
+
+              // Display the post details here
+              echo '<div class="post-container">';
+              echo '<div class="post-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">';
+              echo '<h2>' . $title . '</h2>';
+              echo '</div>';
+              echo '<p style="text-align: justify;">' . truncateText($description, 500) . '</p>'; // Truncate to 500 characters
+              if($image != null)
+              { 
+                echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
+                echo '<br>';
+              }
+              echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $PostID . '">View blog</a>';
+              echo '</div>';
+            }
+          } else {
+            echo "No posts found.";
+          }
+        }
+        function truncateText($text, $limit) {
+          if (strlen($text) > $limit) {
+              $truncated = substr($text, 0, $limit);
+              return $truncated . '...';
+          }
+          return $text;
+        }
+
+        // Fetch the first 10 post details
+        fetchPosts($conn, 0, 10);
+        ?>
+      </div>
     <center>
         <button type="button" class="btn btn-success" onclick="loadMorePosts()">Load More</button>
     </center>
