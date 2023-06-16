@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Coding by CodingLab | www.codinglabweb.com -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -65,13 +64,28 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="card shadow-sm">
-            <i class="bi bi-pen col-md-12 text-right" onclick="startNameEdit()"></i>
+            <!-- <i class="bi bi-pen col-md-12 text-right" onclick="startNameEdit()"></i> -->
           
-          <div class="card-header bg-transparent text-center">
-            <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp">
-            <h3 class="h2 mb-0 mr-2" contenteditable="true" id="name" onkeydown="handleNameEdit(event)">Ishmam Ahasan Samin</h3>
+          <!-- <div class="card-header bg-transparent text-center">
+            <label for="upload-profile-pic">
+              <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp">
+          </label>
+          <input type="file" id="upload-profile-pic" style="display: none;">
+             <h3 class="h2 mb-0 mr-2" contenteditable="true" id="name" onkeydown="handleNameEdit(event)">Ishmam Ahasan Samin</h3> 
+            <h3 class="h2 mb-0 mr-2"></h3>
             <a href="../Analytic/index.html"><h6>Analytics</h6></a>
-          </div>
+          </div> -->
+          <div class="card-header bg-transparent text-center">
+            <div class="popup" id="upload-popup">
+                <span class="close-popup" onclick="closePopup()">&times;</span>
+                <h4>Upload Profile Picture</h4>
+                <input type="file" id="upload-profile-pic" accept="image/*">
+                <button onclick="handleProfilePicUpload()">Upload</button>
+            </div>
+            <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp" onclick="openPopup()">
+            <h3 class="h2 mb-0 mr-2"></h3>
+            <a href="../Analytic/index.html"><h6>Analytics</h6></a>
+        </div>
           <div class="card-body">
             <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
             <p class="mb-0"><strong class="pr-1">Occupation: </strong>Programmer</p>
@@ -81,40 +95,44 @@
       </div>
       <div class="col-lg-8">
         <div class="card shadow-sm">
-            <i class="bi bi-pen col-md-12 text-right" ></i>
+          <i class="bi bi-pen col-md-12 text-right" onclick="startEdit()"></i>
           <div class="card-header bg-transparent border-0">
             <h3 class="mb-0">ABOUT</h3>
           </div>
           <div class="card-body pt-0">
             <table class="table table-bordered">
               <tr>
+                <th width="30%">Name</th>
+                <td width="2%">:</td>
+                <td contenteditable="false" id="nama">asbgdaggaed</td>
+              </tr>
+              <tr>
                 <th width="30%">Gender</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="Gen" onkeydown="handleGenEdit(event)">Male</td>
+                <td contenteditable="false" id="Gen">Male</td>
               </tr>
               <tr>
                 <th width="30%">Phone</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="No" onkeydown="handleNoEdit(event)">013-6789 9097</td>
+                <td contenteditable="false" id="No">013-6789 9097</td>
               </tr>
               <tr>
                 <th width="30%">E-mail</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="Email" onkeydown="handleEmailEdit(event)">ali@gmail.com</td>
+                <td contenteditable="false" id="Email">ali@gmail.com</td>
               </tr>
               <tr>
                 <th width="30%">Instagram</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="Insta" onkeydown="handleInstaEdit(event)">ali_bui</td>
+                <td contenteditable="false" id="Insta">ali_bui</td>
               </tr>
             </table>
           </div>
         </div>
           <div style="height: 26px"></div>
         <div class="card shadow-sm">
-          <i class="bi bi-pen col-md-12 text-right" onclick="startTEEdit()"></i>
+          <!-- <i class="bi bi-pen col-md-12 text-right" onclick="startEdit()"></i> -->
           <div class="card-header bg-transparent border-0">
-            
             <h3 class="mb-0">TRAVEL EXPERIENCES</h3>
           </div>
           <div class="card-body pt-0">
@@ -122,12 +140,12 @@
               <tr>
                 <th width="30%">Year of Experience</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="TE" onkeydown="handleTEEdit(event)">5</td>
+                <td contenteditable="false" id="TE">5</td>
               </tr>
               <tr>
                 <th width="30%">Country</th>
                 <td width="2%">:</td>
-                <td contenteditable="true" id="TE" onkeydown="handleCountryEdit(event)">Malaysia, Cambodia, Singapore</td>
+                <td contenteditable="false" id="Country">Malaysia, Cambodia, Singapore</td>
               </tr>
             </table>
           </div>
@@ -237,13 +255,56 @@
           nameElement.innerText = nameElement.dataset.originalName;
           finishNameEdit();
         }}
+    
+      function startEdit() {
+        const namaCell = document.getElementById("nama");
+        const genCell = document.getElementById("Gen");
+        const noCell = document.getElementById("No");
+        const emailCell = document.getElementById("Email");
+        const instaCell = document.getElementById("Insta");
+        const teCell = document.getElementById("TE");
+        const countryCell = document.getElementById("Country");
+        const locationCell = document.getElementById("location");
+        
 
-        function startTEEdit() {
-        const TEElement = document.getElementById("TE");
-        TEElement.contentEditable = "true";
-        TEElement.classList.add("border", "border-secondary");
-        TEElement.focus();
+        namaCell.contentEditable = true;
+        genCell.contentEditable = true;
+        noCell.contentEditable = true;
+        emailCell.contentEditable = true;
+        instaCell.contentEditable = true;
+        teCell.contentEditable = true;
+        countryCell.contentEditable = true;
+        locationCell.contentEditable = true;
+
+        namaCell.focus();
       }
+
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          const namaCell = document.getElementById("nama");
+          const genCell = document.getElementById("Gen");
+          const noCell = document.getElementById("No");
+          const emailCell = document.getElementById("Email");
+          const instaCell = document.getElementById("Insta");
+          const teCell = document.getElementById("TE");
+          const countryCell = document.getElementById("Country");
+          const locationCell = document.getElementById("location");
+
+          namaCell.contentEditable = false;
+          genCell.contentEditable = false;
+          noCell.contentEditable = false;
+          emailCell.contentEditable = false;
+          instaCell.contentEditable = false;
+          teCell.contentEditable = false;
+          countryCell.contentEditable = false;
+          locationCell.contentEditable = false;
+
+          const h3Element = document.querySelector("h3.h2.mb-0.mr-2");
+          h3Element.textContent = namaCell.textContent;
+
+        }
+      });
+      
     
       function finishTEEdit() {
         const TEElement = document.getElementById("TE");

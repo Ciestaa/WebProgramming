@@ -213,3 +213,26 @@ body {
 .h4{
   display: flex;
 }
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-popup {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.profile_img {
+  cursor: pointer;
+}
