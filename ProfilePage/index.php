@@ -1,3 +1,77 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to the login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.php");
+    exit;
+}
+
+// Get the username from your session or database
+$username = $_SESSION["username"];
+
+if (isset($_POST["logout"])) {
+    // Clear the session and redirect to the login page
+    session_unset();
+    session_destroy();
+    header("location: index.php");
+    exit;
+}
+
+// Add your database connection code here
+$conn = new mysqli('localhost', 'root', '', 'gotravel');
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_error);
+}
+
+// Fetch the post details using the provided post ID
+$sql = "SELECT * FROM userdetail WHERE Username = '$username'";
+$sql2 = "SELECT * FROM user WHERE Username = '$username'";
+$result = $conn->query($sql);
+$result2 = $conn->query($sql2);
+
+if ($result->num_rows > 0) {
+    // Loop through each row and fetch the data 
+    while ($row = $result->fetch_assoc()) {
+        // Access the data using column names
+        $fullName = $row["FullName"];
+        $gender = $row["Gender"];
+        $phoneNo = $row["PhoneNo"];
+        $instagram = $row["Instagram"];
+        $yearTravel = $row["YearTravel"];
+        $countryTravel = $row["CountryTravel"];
+        $ProfilePic =$row['ProfilePic'];
+
+        // Retrieve other column values here
+
+        // Do something with the data
+        // ...
+    }
+} else {
+    // No rows returned
+    // Handle the case when no user details are found
+}
+
+if ($result2->num_rows > 0) {
+  // Loop through each row and fetch the data 
+  while ($row = $result2->fetch_assoc()) {
+      // Access the data using column names
+      $email = $row["Email"];
+
+      // Retrieve other column values here
+
+      // Do something with the data
+      // ...
+  }
+} else {
+  // No rows returned
+  // Handle the case when no user details are found
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,7 +119,7 @@
       <i class="bi bi-plus text-white"></i>
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
       <img src="images/profile/userprofile.jpg" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-      <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+      <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html"><?php echo htmlspecialchars($username); ?></a>
       <i class="bi bi-box-arrow-left text-white"></i>
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
     </div>
@@ -76,14 +150,16 @@
             <a href="../Analytic/index.html"><h6>Analytics</h6></a>
           </div> -->
           <div class="card-header bg-transparent text-center">
-            <div class="popup" id="upload-popup">
-                <span class="close-popup" onclick="closePopup()">&times;</span>
-                <h4>Upload Profile Picture</h4>
-                <input type="file" id="upload-profile-pic" accept="image/*">
-                <button onclick="handleProfilePicUpload()">Upload</button>
-            </div>
-            <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp" onclick="openPopup()">
-            <h3 class="h2 mb-0 mr-2"></h3>
+          <div class="popup" id="upload-popup">
+    <span class="close-popup" onclick="closePopup()">&times;</span>
+    <h4>Upload Profile Picture</h4>
+    <form method="POST" action="upload_profile_pic.php" enctype="multipart/form-data">
+        <input type="file" name="profile_pic" id="upload-profile-pic" accept=".jpg, .jpeg, .png, .gif">
+        <button type="submit">Upload</button>
+    </form>
+</div>
+            <img class="profile_img" src=<?php echo htmlspecialchars($ProfilePic);?> onclick="openPopup()">
+            <h3 class="h2 mb-0 mr-2"><?php echo htmlspecialchars($fullName); ?></h3>
             <a href="../Analytic/index.php"><h6>Analytics</h6></a>
         </div>
           <div class="card-body">
@@ -96,6 +172,7 @@
       <div class="col-lg-8">
         <div class="card shadow-sm">
           <i class="bi bi-pen col-md-12 text-right" onclick="startEdit()"></i>
+          
           <div class="card-header bg-transparent border-0">
             <h3 class="mb-0">ABOUT</h3>
           </div>
@@ -104,27 +181,27 @@
               <tr>
                 <th width="30%">Name</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="nama">asbgdaggaed</td>
+                <td contenteditable="false" id="nama" type="text"><?php echo htmlspecialchars($fullName); ?></td>
               </tr>
               <tr>
                 <th width="30%">Gender</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="Gen">Male</td>
+                <td contenteditable="false" type="text" id="Gen"><?php echo htmlspecialchars($gender); ?></td>
               </tr>
               <tr>
                 <th width="30%">Phone</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="No">013-6789 9097</td>
+                <td contenteditable="false" type="text" id="No"><?php echo htmlspecialchars($phoneNo); ?></td>
               </tr>
               <tr>
                 <th width="30%">E-mail</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="Email">ali@gmail.com</td>
+                <td contenteditable="false" type="text" id="Email"><?php echo htmlspecialchars($email); ?></td>
               </tr>
               <tr>
                 <th width="30%">Instagram</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="Insta">ali_bui</td>
+                <td contenteditable="false" type="text" id="Insta"><?php echo htmlspecialchars($instagram); ?></td>
               </tr>
             </table>
           </div>
@@ -140,14 +217,17 @@
               <tr>
                 <th width="30%">Year of Experience</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="TE">5</td>
+                <td contenteditable="false" id="TE"><?php echo htmlspecialchars($yearTravel); ?></td>
               </tr>
               <tr>
                 <th width="30%">Country</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="Country">Malaysia, Cambodia, Singapore</td>
+                <td contenteditable="false" id="Country"><?php echo htmlspecialchars($countryTravel); ?></td>
               </tr>
             </table>
+            <div class="nav-links">
+  <button style="font-weight: bold; color:black; font-size:small;" onclick="confirmDeleteAccount()">DELETE ACCOUNT</button>
+</div>
           </div>
         </div>
       </div>
@@ -217,7 +297,7 @@
             <div class="profile-details">
               <img src="images/profile/userprofile.jpg" alt="" />
               <div class="name-job">
-                <h3 class="name">Love the scenary here</h3>
+                <h3 class="name">Love the scenery here</h3>
                 <h4 class="job">10 January, 2023</h4>
               </div>
             </div>
@@ -229,9 +309,32 @@
       <div class="swiper-pagination"></div>
     </div>
 
+<script>
+  function confirmDeleteAccount() {
+  const username = prompt("Please enter your username to confirm account deletion:");
+  if (username) {
+    deleteAccount(username);
+  }
+}
+
+function deleteAccount(username) {
+  // Send an AJAX request to the server-side PHP script to handle the account deletion
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "delete_account.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      alert(xhr.responseText); // Display the response from the server
+      // You can redirect the user to another page here if needed
+    }
+  };
+  xhr.send("username=" + encodeURIComponent(username));
+}
+</script>
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
     <script>
+      
       function startNameEdit() {
         const nameElement = document.getElementById("name");
         nameElement.contentEditable = "true";
@@ -256,54 +359,79 @@
           finishNameEdit();
         }}
     
-      function startEdit() {
-        const namaCell = document.getElementById("nama");
-        const genCell = document.getElementById("Gen");
-        const noCell = document.getElementById("No");
-        const emailCell = document.getElementById("Email");
-        const instaCell = document.getElementById("Insta");
-        const teCell = document.getElementById("TE");
-        const countryCell = document.getElementById("Country");
-        const locationCell = document.getElementById("location");
-        
+        function startEdit() {
+  const namaCell = document.getElementById("nama");
+  const genCell = document.getElementById("Gen");
+  const noCell = document.getElementById("No");
+  const emailCell = document.getElementById("Email");
+  const instaCell = document.getElementById("Insta");
+  const teCell = document.getElementById("TE");
+  const countryCell = document.getElementById("Country");
 
-        namaCell.contentEditable = true;
-        genCell.contentEditable = true;
-        noCell.contentEditable = true;
-        emailCell.contentEditable = true;
-        instaCell.contentEditable = true;
-        teCell.contentEditable = true;
-        countryCell.contentEditable = true;
-        locationCell.contentEditable = true;
+  namaCell.contentEditable = true;
+  genCell.contentEditable = true;
+  noCell.contentEditable = true;
+  emailCell.contentEditable = false;
+  instaCell.contentEditable = true;
+  teCell.contentEditable = true;
+  countryCell.contentEditable = true;
 
-        namaCell.focus();
-      }
+  namaCell.focus();
+}
 
-      document.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-          const namaCell = document.getElementById("nama");
-          const genCell = document.getElementById("Gen");
-          const noCell = document.getElementById("No");
-          const emailCell = document.getElementById("Email");
-          const instaCell = document.getElementById("Insta");
-          const teCell = document.getElementById("TE");
-          const countryCell = document.getElementById("Country");
-          const locationCell = document.getElementById("location");
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    const namaCell = document.getElementById("nama");
+    const genCell = document.getElementById("Gen");
+    const noCell = document.getElementById("No");
+    const emailCell = document.getElementById("Email");
+    const instaCell = document.getElementById("Insta");
+    const teCell = document.getElementById("TE");
+    const countryCell = document.getElementById("Country");
 
-          namaCell.contentEditable = false;
-          genCell.contentEditable = false;
-          noCell.contentEditable = false;
-          emailCell.contentEditable = false;
-          instaCell.contentEditable = false;
-          teCell.contentEditable = false;
-          countryCell.contentEditable = false;
-          locationCell.contentEditable = false;
+    namaCell.contentEditable = false;
+    genCell.contentEditable = false;
+    noCell.contentEditable = false;
+    emailCell.contentEditable = false;
+    instaCell.contentEditable = false;
+    teCell.contentEditable = false;
+    countryCell.contentEditable = false;
 
-          const h3Element = document.querySelector("h3.h2.mb-0.mr-2");
-          h3Element.textContent = namaCell.textContent;
+    const h3Element = document.querySelector("h3.h2.mb-0.mr-2");
+    h3Element.textContent = namaCell.textContent;
 
+    // Retrieve the username from the current session (replace with your actual method)
+
+    // Prepare the data to be sent to the server
+    const data = {
+      fullName: namaCell.textContent,
+      age: genCell.textContent,
+      job: noCell.textContent,
+      instagram: instaCell.textContent,
+      yearTravel: teCell.textContent,
+      countryTravel: countryCell.textContent
+    };
+
+    // Send the data to the server using AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "save_user_detail.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // Request was successful, handle the server's response if needed
+          console.log(xhr.responseText);
+        } else {
+          // Request failed, handle the error
+          console.error("Error:", xhr.status);
         }
-      });
+      }
+    };
+    xhr.send("fullName=" + encodeURIComponent(data.fullName) + "&age=" + encodeURIComponent(data.age) + "&job=" + encodeURIComponent(data.job) + "&instagram=" + encodeURIComponent(data.instagram) + "&yearTravel=" + encodeURIComponent(data.yearTravel) + "&countryTravel=" + encodeURIComponent(data.countryTravel));
+  }
+});
+
+
       
     
       function finishTEEdit() {
