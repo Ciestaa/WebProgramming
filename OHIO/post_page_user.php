@@ -97,13 +97,13 @@ if(isset($_POST["logout"])){
 
       function fetchPosts($conn, $offset, $limit) {
         // Fetch post details with offset and limit
-        $sql = "SELECT * FROM posts LIMIT $offset, $limit";
+        $sql = "SELECT * FROM posts ORDER BY postID DESC LIMIT $offset, $limit";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
           // Loop through the rows and access each post detail
           while ($row = $result->fetch_assoc()) {
-            $postID = $row['postID'];
+            $PostID = $row['postID'];
             $usernamePOST = $row['Username'];
             $title = $row['Title'];
             $description = $row['Description'];
@@ -119,9 +119,12 @@ if(isset($_POST["logout"])){
             echo '</button>';
             echo '</div>';
             echo '<p style="text-align: justify;">' . $description . '</p>';
-            echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
-            echo '<br>';
-            echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $postID . '">View blog</a>';
+            if($image != null)
+            { 
+              echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
+              echo '<br>';
+            }
+            echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $PostID . '">View blog</a>';
             echo '</div>';
           }
         } else {

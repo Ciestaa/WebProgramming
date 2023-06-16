@@ -136,7 +136,17 @@ body {
     max-width: 100%;
     margin-bottom: 20px;
   }
-  
+  .postimg {
+    height: 150px;
+    max-height:150px;
+    overflow: hidden;
+    position: absolute;
+  }
+
+  .postimg img {
+    max-height: 150px;
+    width: auto;
+  }
 
   .post-section {
     background-attachment: fixed;

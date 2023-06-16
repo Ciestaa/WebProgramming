@@ -105,6 +105,8 @@ if (isset($_POST['comment'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         function search() {
             var query = document.getElementById("search-bar").value;
@@ -143,6 +145,7 @@ if (isset($_POST['comment'])) {
     </div>
       
     <div class="post-section">
+        <div class="post-container">
         <?php
         if (isset($_GET['post_id'])) {
             $postID = $_GET['post_id'];
@@ -166,11 +169,16 @@ if (isset($_POST['comment'])) {
                     $location = $row['Location'];
 
                     // Display the post details here
-                    echo '<div class="post-container">';
                     echo '<h2>' . $title . '</h2>';
                     echo '<p>' . $description . '</p>';
-                    echo '<img src="' . $image . '" alt="Post Image">';
-                    echo '</div>';
+                    if($image != null)
+                    {   
+                        echo '<div style="display: flex; justify-content: center; align-items: center; height: 400px; max-width: 3000;">';
+                        echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 400px;">';
+                        echo '</div>';
+
+                    }
+
                 }
             } else {
                 echo "Post not found.";
@@ -181,6 +189,7 @@ if (isset($_POST['comment'])) {
             echo "Invalid post ID.";
         }
         ?>
+        </div>
         <div class="rating-container">
             <h5>Rate this blog:</h5>
             <form id="rating-form" method="post">
@@ -207,26 +216,94 @@ if (isset($_POST['comment'])) {
                     <input type="submit" value="Submit">
                 </form>
             </div>
-            <div class="comment-incontainer">
-                <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">User123</h6>
-                <br>
-                <p style="margin-left: 60px;">Wow this place is good! I think i will go here with my  family soon</p>
-            </div> 
-            <div class="comment-incontainer">
-                <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
-                <br>
-                <p style="margin-left: 60px;">Im handsome</p>
-            </div> 
-            <div class="comment-incontainer">
-                <img src="CSS/Images/Ano_Profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">
-                <h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">Anonymous</h6>
-                <br>
-                <p style="margin-left: 60px;">Im handsome</p>
+
+            <!-- Start of the comment section -->
+            <?php
+            if (isset($_GET['post_id'])) {
+                $postID = $_GET['post_id'];
+
+        
+                $conn = new mysqli('localhost', 'root', '', 'gotravel');
+                if ($conn->connect_error) {
+                    die('Connection failed: ' . $conn->connect_error);
+                }
+
+                function fetchPosts($conn, $offset, $limit,$postID) {
+                    // Fetch post details with offset and limit
+                    $sql = "SELECT * FROM comment ORDER BY comID DESC LIMIT $offset, $limit";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                    // Loop through the rows and access each post detail
+                    while ($row = $result->fetch_assoc()) {
+                        $PostIDCom = $row['postID'];
+                        $usernameComment = $row['Username'];
+                        $comments = $row['Comment'];
+
+                        if($PostIDCom == $postID)
+                        {
+                            // Display the post details here
+                            echo '<div class="comment-incontainer">';
+                            echo '<img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
+                            echo '<h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">'.$usernameComment.'</h6>';
+                            echo '<br>';
+                            echo '<p style="margin-left: 60px;">'. $comments .'</p>';
+                            echo '</div> ';
+                        }
+                    }
+                    } else {
+                    echo "No posts found.";
+                    }
+                }
+
+                // Fetch the first 10 post details
+                fetchPosts($conn, 0, 10,$postID);
+            }
+            ?>
+            
+            
             </div>
-        </div>
+            <center>
+                <button type="button" class="btn btn-success" onclick="loadMoreComments()">Load More</button>
+            </center>
+            <div class="loader-div" style="display: none;">Loading...</div>
     </div>
+
+    <script type="text/javascript">
+        function loadMoreComments() {
+            var offset = document.getElementsByClassName('comment-incontainer').length; // Get the number of existing comments
+            var limit = 10; // Number of comments to load per request
+
+            // Show the loader
+            $(".loader-div").show();
+
+            // Make an AJAX request to load more comments
+            $.ajax({
+                url: 'load_more_comments.php', // Path to the PHP script handling the request
+                type: 'POST',
+                data: {
+                offset: offset,
+                limit: limit,
+                post_id: <?php echo $postID; ?> // Pass the post ID to the PHP script
+                },
+                dataType: 'html',
+                success: function (response) {
+                // Hide the loader
+                $(".loader-div").hide();
+
+                // Append the loaded comments to the comment container
+                $('.comment-container').append(response);
+                },
+                error: function (xhr, status, error) {
+                // Hide the loader
+                $(".loader-div").hide();
+
+                console.error(error);
+                }
+            });
+        }
+
+</script>
     
 </body>
 

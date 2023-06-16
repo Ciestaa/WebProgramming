@@ -9,7 +9,7 @@ if (isset($_POST['offset']) && isset($_POST['limit'])) {
     $limit = $_POST['limit'];
 
     // Fetch post details with offset and limit
-    $sql = "SELECT * FROM posts LIMIT $offset, $limit";
+    $sql = "SELECT * FROM posts ORDER BY postID DESC LIMIT $offset, $limit";
     $result = $conn->query($sql);
 
     function limitWords($string, $wordLimit) {
@@ -25,7 +25,7 @@ if (isset($_POST['offset']) && isset($_POST['limit'])) {
     if ($result->num_rows > 0) {
         // Loop through the rows and access each post detail
         while ($row = $result->fetch_assoc()) {
-            $no = $row['No'];
+            $PostID = $row['postID'];
             $usernamePOST = $row['Username'];
             $title = $row['Title'];
             $description = $row['Description'];
@@ -41,9 +41,12 @@ if (isset($_POST['offset']) && isset($_POST['limit'])) {
             echo '</button>';
             echo '</div>';
             echo '<p style="text-align: justify;">' . limitWords($description, 100) . '</p>';
-            echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
-            echo '<br>';
-            echo '<a style="color:black" href="../OHIO/viewpost_user.html">View blog</a>';
+            if($image != null)
+            { 
+              echo '<img src="' . $image . '" alt="Post Image" style="max-width: 100%; height: 150px; margin: 10px 0;">';
+              echo '<br>';
+            }
+            echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $PostID . '">View blog</a>';
             echo '</div>';
         }
     } else {

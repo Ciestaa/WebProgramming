@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
       highlightStars(rating);
     });
 
+    star.addEventListener('mouseout', function() {
+      var rating = parseInt(ratingValue.value);
+      highlightStars(rating);
+    });
+
     star.addEventListener('click', function() {
       var rating = parseInt(star.getAttribute('data-rating'));
       setRating(rating);
