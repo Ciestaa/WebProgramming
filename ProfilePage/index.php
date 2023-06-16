@@ -84,7 +84,7 @@
             </div>
             <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp" onclick="openPopup()">
             <h3 class="h2 mb-0 mr-2"></h3>
-            <a href="../Analytic/index.html"><h6>Analytics</h6></a>
+            <a href="../Analytic/index.php"><h6>Analytics</h6></a>
         </div>
           <div class="card-body">
             <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
