@@ -31,6 +31,7 @@ if (isset($_POST['offset']) && isset($_POST['limit'])) {
             $description = $row['Description'];
             $image = $row['Image'];
             $location = $row['Location'];
+            
 
             // Display the post details here
             echo '<div class="post-container">';
