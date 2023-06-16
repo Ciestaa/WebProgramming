@@ -69,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check if there are no errors before inserting data into the database
     if (empty($post_err)) {
         // Prepare an insert statement
-        $sql = "INSERT INTO posts (Username, Title, Description, Image, Location) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO posts (Username, Title, Description, Image, Location,TotalView) VALUES (?, ?, ?, ?, ?, 0)";
 
         if ($stmt = $mysqli->prepare($sql)) { // <-- Replace $conn with $mysqli
             // Bind variables to the prepared statement as parameters

@@ -1,3 +1,56 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to the login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.php");
+    exit;
+}
+
+// Get the username from your session or database
+$username = $_SESSION["username"];
+
+if (isset($_POST["logout"])) {
+    // Clear the session and redirect to the login page
+    session_unset();
+    session_destroy();
+    header("location: index.php");
+    exit;
+}
+
+// Add your database connection code here
+$conn = new mysqli('localhost', 'root', '', 'gotravel');
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_error);
+}
+
+// Fetch the post details using the provided post ID
+$sql = "SELECT COUNT(c.comID) AS comment_count, p.TotalView
+        FROM comment c
+        LEFT JOIN posts p ON c.postID = p.postID
+        WHERE c.Username = '$username'
+        GROUP BY p.postID";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Loop through each row and fetch the data
+    while ($row = $result->fetch_assoc()) {
+        // Access the data using column names
+        $CommentCount = $row["comment_count"];
+        $TotalView = $row["TotalView"];
+        // Retrieve other column values here
+
+        // Do something with the data
+        // ...
+    }
+} else {
+    // No rows returned
+    // Handle the case when no user details are found
+}
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,12 +63,12 @@
 
     <script>
       function search() {
-          var query = document.getElementById("search-bar").value;
-          if (query !== "") {
-              window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
-          }
+        var query = document.getElementById("search-bar").value;
+        if (query !== "") {
+          window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
+        }
       }
-  </script>
+    </script>
 </head>
 <body>
 
@@ -51,29 +104,18 @@
                 <img class="img-fluid" src="view.png">
               </div>
               <div class="team-content">
-                <h3 class="name">3, 281</h3>
+                <h3 class="name"><?php echo htmlspecialchars($TotalView); ?></h3>
                 <h4 class="title">Total Views</h4>
               </div>
             </div>
           </div>
-              <div class="col-9 col-sm-6 col-md-4 col-lg-3">
-            <div style="background-color:#f99f9e;" class="our-team">
-              <div class="picture">
-                <img class="img-fluid" src="heart.png">
-              </div>
-              <div  class="team-content">
-                <h3 class="name">19, 855</h3>
-                <h4 class="title">Total Likes</h4>
-              </div>
-            </div>
-          </div>
-              <div class="col-9 col-sm-6 col-md-4 col-lg-3">
+          <div class="col-9 col-sm-6 col-md-4 col-lg-3">
             <div style="background-color:#bbdff9;" class="our-team">
               <div class="picture">
                 <img class="img-fluid" src="comment.png">
               </div>
               <div class="team-content">
-                <h3 class="name">661</h3>
+                <h3 class="name"><?php echo htmlspecialchars($CommentCount); ?></h3>
                 <h4 class="title">Total Comments</h4>
               </div>
             </div>
@@ -142,7 +184,6 @@
         }
       </style>
     
-    <body>
 
       <div class="chartContainer">
             <p class="white">Overview</p>
@@ -151,61 +192,54 @@
           <canvas id="myChart"></canvas>
         </div>
       
-      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
-      <script>
-      // setup 
-      const data = {
-        labels: ['1/5', '2/5', '3/5', '4/5', '5/5', '6/5', '7/5'],
-        datasets: [{
-          label: 'Likes',
-          data: [54, 30, 67, 98, 45, 39, 20],
-          backgroundColor: [
-            'rgba(255, 26, 104)',
-          ],
-          borderColor: [
-            'rgba(255, 26, 104)',
-           
-          ],
-          borderWidth: 1
-        },{label: 'Comments',
-          data: [18, 13, 6, 9, 12, 3, 40],
-          backgroundColor: [
-            'rgba(255,255,0)',
-            
-          ],
-          borderColor: [
-            'rgba(255,255,0)',
-           
-          ],
-          borderWidth: 1
-    
-        }
-    ]
-      };
-    
-      // config 
-      const config = {
-        type: 'line',
-        data,
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
+        <script>
+          // Function to fetch data and update the chart
+          function fetchData() {
+            // Make an AJAX request to fetch the data
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                updateChart(data);
+              }
+            };
+            xhr.open('POST', 'fetch_data.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('post_id=123'); // Replace '123' with the actual post ID
+
           }
-        }
-      };
-    
-      // render init block
-      const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-      );
-    
-      // Instantly assign Chart.js version
-      const chartVersion = document.getElementById('chartVersion');
-      chartVersion.innerText = Chart.version;
-      </script>
+
+          // Function to update the chart with the fetched data
+          function updateChart(data) {
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // Create the chart
+            const myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: data.labels,
+                datasets: [{
+                  label: 'Comments',
+                  data: data.commentData,
+                  backgroundColor: 'rgba(255,255,0)',
+                  borderColor: 'rgba(255,255,0)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+            });
+          }
+
+          // Call the fetchData function to initially load the chart
+          fetchData();
+        </script>
       </div>
     </div>
-    </body>
+</body>

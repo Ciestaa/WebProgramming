@@ -123,6 +123,7 @@ if(isset($_POST["logout"])){
               }
               echo '<a style="color:black" href="../OHIO/viewpost_user.php?post_id=' . $PostID . '">View blog</a>';
               echo '</div>';
+
             }
           } else {
             echo "No posts found.";

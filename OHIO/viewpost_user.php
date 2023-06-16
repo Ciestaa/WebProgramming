@@ -76,8 +76,10 @@ if (isset($_POST['comment'])) {
     // Get the post ID
     $postID = $_POST['post_id'];
 
+    $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+
     // Insert the comment into the database
-    $insertCommentSql = "INSERT INTO comment (postID, Username, Comment) VALUES ('$postID', '$username', '$comment')";
+    $insertCommentSql = "INSERT INTO comment (postID, Username, Comment, Date) VALUES ('$postID', '$username', '$comment', '$currentDate')";
     $insertCommentResult = $conn->query($insertCommentSql);
 
     if ($insertCommentResult === true) {
@@ -147,6 +149,7 @@ if (isset($_POST['comment'])) {
     <div class="post-section">
         <div class="post-container">
         <?php
+
         if (isset($_GET['post_id'])) {
             $postID = $_GET['post_id'];
 
@@ -156,8 +159,12 @@ if (isset($_POST['comment'])) {
                 die('Connection failed: ' . $conn->connect_error);
             }
 
+            // Update the TotalView column for the current post
+            $sql = "UPDATE posts SET TotalView = TotalView + 1 WHERE postID = '$postID'";
+            $conn->query($sql);
+
             // Fetch the post details using the provided post ID
-            $sql = "SELECT * FROM posts WHERE postID = $postID";
+            $sql = "SELECT * FROM posts WHERE postID = '$postID'";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
