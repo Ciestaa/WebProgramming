@@ -49,6 +49,13 @@ if ($result->num_rows > 0) {
     }
 } else {
     // No rows returned
+    $fullName = "";
+    $gender = "";
+    $phoneNo = "";
+    $ProfilePic = "";
+    $instagram = "";
+    $yearTravel = "";
+    $countryTravel = "";
     // Handle the case when no user details are found
 }
 
@@ -64,6 +71,7 @@ if ($result2->num_rows > 0) {
   }
 } else {
   // No rows returned
+  $email = "";
   // Handle the case when no user details are found
 }
 

@@ -25,11 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
       highlightStars(rating);
     });
 
-    star.addEventListener('mouseout', function() {
-      var rating = parseInt(ratingValue.value);
-      highlightStars(rating);
-    });
-
     star.addEventListener('click', function() {
       var rating = parseInt(star.getAttribute('data-rating'));
       setRating(rating);
@@ -43,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (xhr.status === 200) {
           console.log(xhr.responseText);
           // Handle the success response here
+          location.reload(); // Refresh the page
         } else {
           console.error('Error updating rating: ' + xhr.statusText);
           // Handle the error response here
@@ -69,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle the success response here
         // Clear the comment textarea
         document.getElementById('comment').value = '';
+        location.reload(); // Refresh the page
       } else {
         console.error('Error inserting comment: ' + xhr.statusText);
         // Handle the error response here

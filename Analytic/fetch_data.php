@@ -18,7 +18,7 @@ $postID = $_POST['post_id'];
 $commentDataSql = "SELECT c.Date, COUNT(*) AS comment_count
                    FROM comment c
                    LEFT JOIN posts p ON c.postID = p.postID
-                   WHERE c.Username = '$username'
+                   WHERE p.Username = '$username'
                    GROUP BY c.Date
                    ORDER BY c.Date ASC
                    LIMIT 7";

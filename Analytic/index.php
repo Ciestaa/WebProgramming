@@ -29,7 +29,7 @@ if ($conn->connect_error) {
 $sql = "SELECT COUNT(c.comID) AS comment_count, p.TotalView
         FROM comment c
         LEFT JOIN posts p ON c.postID = p.postID
-        WHERE c.Username = '$username'
+        WHERE p.Username = '$username'
         GROUP BY p.postID";
 $result = $conn->query($sql);
 
