@@ -103,6 +103,29 @@ if(isset($_POST["logout"])){
           if ($result->num_rows > 0) {
             // Loop through the rows and access each post detail
             while ($row = $result->fetch_assoc()) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
               $PostID = $row['postID'];
               $usernamePOST = $row['Username'];
               $title = $row['Title'];
