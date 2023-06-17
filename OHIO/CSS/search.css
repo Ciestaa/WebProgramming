@@ -185,3 +185,40 @@ body {
       margin-top: 20px;
     }
   }
+
+  /* filter */
+
+  .filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .filter-container label {
+    margin-right: 5px;
+  }
+
+  .filter-container input[type=radio] {
+    margin-right: 15px;
+  }
+
+  .filter-container button {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+
+  }
+
+  .filter-container button:hover {
+    background-color: #45a049;
+  }
+
+  .search-results {
+    margin-left: 20px;
+  }

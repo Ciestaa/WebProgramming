@@ -18,6 +18,33 @@
             }
         }
     </script>
+    
+    <!-- Filter Search -->
+    <script>
+    function applyFilter() {
+      var input = document.getElementById("searchInput").value.toLowerCase();
+      var filter = document.querySelector('input[name="filter"]:checked').id;
+      var searchResults = document.getElementById("searchResults");
+      var resultsHTML = "";
+
+      if (filter === "filterAll") {
+
+        // Replace ni untuk all
+        resultsHTML += "<p>Filtered by: All</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+      } else if (filter === "filterOption1") {
+      
+        // Replace ni untuk user
+        resultsHTML += "<p>Filtered by: Option 1</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+      } else if (filter === "filterOption2") {
+
+        // Replace ni untuk post
+        resultsHTML += "<p>Filtered by: Option 2</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+      }
+    }
+  </script> 
 </head>
 
 <body>
@@ -48,6 +75,17 @@
     </div>
   </div>
 <div class="container">
+
+ <!-- Filter Search -->
+ <div class="filter-container">
+    <label for="filterAll">All</label>
+    <input type="radio" name="filter" id="filterAll" checked>
+    <label for="filterOption1">User</label>
+    <input type="radio" name="filter" id="filterOption1">
+    <label for="filterOption2">Post</label>
+    <input type="radio" name="filter" id="filterOption2">
+    <button onclick="applyFilter()">Apply</button>
+  </div>
 <?php
 // Retrieve the search query from the URL parameter
 $query = isset($_GET['query']) ? $_GET['query'] : '';
