@@ -19,7 +19,7 @@
         }
     </script>
     
-    <!-- Filter Search -->
+    <!-- Filter Search punya function-->
     <script>
     function applyFilter() {
       var input = document.getElementById("searchInput").value.toLowerCase();
@@ -41,6 +41,22 @@
 
         // Replace ni untuk post
         resultsHTML += "<p>Filtered by: Option 2</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+
+        // Replace ni untuk location
+        resultsHTML += "<p>Filtered by: Option 3</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+
+        // Replace ni untuk title
+        resultsHTML += "<p>Filtered by: Option 4</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+
+        // Replace ni untuk author
+        resultsHTML += "<p>Filtered by: Option 5</p>";
+        resultsHTML += "<p>Search keyword: " + input + "</p>";
+        
+        // Replace ni untuk rating
+        resultsHTML += "<p>Filtered by: Option 6</p>";
         resultsHTML += "<p>Search keyword: " + input + "</p>";
       }
     }
@@ -84,6 +100,14 @@
     <input type="radio" name="filter" id="filterOption1">
     <label for="filterOption2">Post</label>
     <input type="radio" name="filter" id="filterOption2">
+    <label for="filterOption2">Location</label>
+    <input type="radio" name="filter" id="filterOption3">
+    <label for="filterOption2">Title</label>
+    <input type="radio" name="filter" id="filterOption4">
+    <label for="filterOption2">Author</label>
+    <input type="radio" name="filter" id="filterOption5">
+    <label for="filterOption2">Rating</label>
+    <input type="radio" name="filter" id="filterOption6">
     <button onclick="applyFilter()">Apply</button>
   </div>
 <?php
