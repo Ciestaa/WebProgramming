@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Check if a file was uploaded without errors
 if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] === 0) {
     $target_dir = "uploads/"; // Directory where the file will be stored
@@ -18,9 +20,12 @@ if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] === 0) {
                 die('Connection failed: ' . $conn->connect_error);
             }
 
+            // Get the current session username
+            $username = $_SESSION['username'];
+
             // Prepare and bind the SQL statement
-            $stmt = $conn->prepare("UPDATE userdetail SET ProfilePic = ?");
-            $stmt->bind_param("s", $target_file);
+            $stmt = $conn->prepare("UPDATE userdetail SET ProfilePic = ? WHERE username = ?");
+            $stmt->bind_param("ss", $target_file, $username);
 
             // Execute the SQL statement
             if ($stmt->execute()) {

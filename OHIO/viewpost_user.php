@@ -190,7 +190,7 @@ if (isset($_POST['comment'])) {
           <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
           <i class="bi bi-plus text-white"></i>
           <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
-          <img src="<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
+          <img src="../ProfilePage/<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
           <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
           <i class="bi bi-box-arrow-left text-white"></i>
           <a style="font-weight: bold; color:white; font-size:small;" href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">LOG OUT</a>
@@ -216,10 +216,11 @@ if (isset($_POST['comment'])) {
             // Update the TotalView column for the current post
             $sql = "UPDATE posts SET TotalView = TotalView + 1 WHERE postID = '$postID'";
             $conn->query($sql);
-
+            
             // Fetch the post details using the provided post ID
-            $sql = "SELECT * FROM posts WHERE postID = '$postID'";
+            $sql = "SELECT p.*, u.* FROM posts p INNER JOIN userdetail u ON p.Username = u.username WHERE p.postID = '$postID'";
             $result = $conn->query($sql);
+            
 
             if ($result->num_rows > 0) {
                 // Display the post details
@@ -229,9 +230,11 @@ if (isset($_POST['comment'])) {
                     $description = $row['Description'];
                     $image = $row['Image'];
                     $location = $row['Location'];
+                    $checkQuery = "SELECT * FROM userdetail WHERE username = '$username'";
+                    $ProfilePic2 = $row['ProfilePic'];
 
                     // Display the post details here
-                    echo '<img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
+                    echo '<img src="../ProfilePage/' . $ProfilePic2 . '"  alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
                     echo '<h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">'.$usernamePost.'</h6>';
                     echo '<br>';
                     echo '<p style="margin-left: 60px;">'. $location .'</p>';

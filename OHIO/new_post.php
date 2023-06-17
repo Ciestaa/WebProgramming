@@ -262,7 +262,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
             <i class="bi bi-plus text-white"></i>
             <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
-            <img src="<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image"
+            <img src="../ProfilePage/<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image"
                 style="border-radius: 50%; float: right; width: 30px; height: 30px;">
             <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
             <i class="bi bi-box-arrow-left text-white"></i>
