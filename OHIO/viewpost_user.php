@@ -113,7 +113,7 @@ if (isset($_POST['comment'])) {
         function search() {
             var query = document.getElementById("search-bar").value;
             if (query !== "") {
-                window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
+                window.location.href = "../OHIO/searchUser.php?query=" + encodeURIComponent(query);
             }
         }
     </script>

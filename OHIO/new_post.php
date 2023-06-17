@@ -8,6 +8,17 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === false){
     exit;
 }
 
+// Get the username from your session or database
+$username = $_SESSION["username"];
+
+if (isset($_POST["logout"])) {
+    // Clear the session and redirect to the login page
+    session_unset();
+    session_destroy();
+    header("location: index.php");
+    exit;
+}
+
 // Include config file
 require_once "../PHP/config.php";
 
@@ -114,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         function search() {
             var query = document.getElementById("search-bar").value;
             if (query !== "") {
-                window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
+                window.location.href = "../OHIO/searchUser.php?query=" + encodeURIComponent(query);
             }
         }
     </script>
@@ -194,12 +205,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
         <div class="nav-links">
             <i class="bi bi-house-door text-white"></i>
-            <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.html">HOME</a>
+            <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
             <i class="bi bi-plus text-white"></i>
-            <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
+            <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
             <img src="CSS/Images/profile.png" alt="Profile Image"
                 style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-            <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+            <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
             <i class="bi bi-box-arrow-left text-white"></i>
             <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
         </div>

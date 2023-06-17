@@ -37,12 +37,12 @@
     
     <div class="nav-links">
         <i class="bi bi-house-door text-white"></i>
-        <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.html">HOME</a>
+        <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
         <i class="bi bi-plus text-white"></i>
-        <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
+        <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
         <img src="CSS/Images/profile.png" alt="Profile Image"
             style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-        <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+        <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php">James19</a>
         <i class="bi bi-box-arrow-left text-white"></i>
         <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
     </div>

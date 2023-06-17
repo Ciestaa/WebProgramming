@@ -13,7 +13,7 @@
             <h1 class="logo-text">Go-Travel</h1>
           </div>
           <div class="nav-links">
-            <a style="font-weight: bold;" href="../OHIO/index.html">HOME</a>
+            <a style="font-weight: bold;" href="../OHIO/index.php">HOME</a>
             <a style="font-weight: bold;" href="../Login/Login.php">LOGIN</a>
           </div>
         </div>
@@ -22,7 +22,6 @@
         <div class="title">
             <h1>TRAVEL<br>EXPERIENCE FOR <br> OTHERS</h1>
         </div>
-        <button class="enter-button" onclick="window.location.href='../OHIO/post_page_anon.html'">Enter</button>
     </div>
 </body>
 </html>
