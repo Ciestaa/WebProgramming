@@ -26,19 +26,22 @@ if ($conn->connect_error) {
 }
 
 // Fetch the post details using the provided post ID
-$sql = "SELECT COUNT(c.comID) AS comment_count, p.TotalView
-        FROM comment c
-        LEFT JOIN posts p ON c.postID = p.postID
-        WHERE p.Username = '$username'
-        GROUP BY p.postID";
+$sql = "SELECT SUM(comment_count) AS total_comment_count, SUM(total_view_sum) AS total_view_sum
+        FROM (
+            SELECT
+              (SELECT COUNT(c.comID) FROM comment c WHERE c.postID = p.postID) AS comment_count,
+              (SELECT COALESCE(SUM(p2.TotalView), 0) FROM posts p2 WHERE p2.postID = p.postID) AS total_view_sum
+            FROM posts p
+            WHERE p.Username = '$username'
+        ) subquery";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     // Loop through each row and fetch the data
     while ($row = $result->fetch_assoc()) {
         // Access the data using column names
-        $CommentCount = $row["comment_count"];
-        $TotalView = $row["TotalView"];
+        $CommentCount = $row["total_comment_count"];
+        $TotalView = $row["total_view_sum"];
         // Retrieve other column values here
 
         // Do something with the data

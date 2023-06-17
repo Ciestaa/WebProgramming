@@ -130,7 +130,8 @@ if (isset($_POST['comment'])) {
     // Get the post ID
     $postID = $_POST['post_id'];
 
-    $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+    date_default_timezone_set('Asia/Singapore');
+    $currentDate = date('Y-m-d');
 
     // Insert the comment into the database
     $insertCommentSql = "INSERT INTO comment (postID, Username, Comment, Date) VALUES ('$postID', '$username', '$comment', '$currentDate')";
