@@ -33,22 +33,24 @@ var swiper = new Swiper(".slide-container", {
 });
 
 function openPopup() {
-  document.getElementById('upload-popup').style.display = 'block';
+  var popup = document.getElementById("upload-popup");
+  popup.style.display = "block";
 }
 
 function closePopup() {
-  document.getElementById('upload-popup').style.display = 'none';
+  var popup = document.getElementById("upload-popup");
+  popup.style.display = "none";
 }
 
 function handleProfilePicUpload() {
   const file = document.getElementById('upload-profile-pic').files[0];
 
   if (file) {
-      // Perform the necessary actions to upload the picture here
-      // You can display a success message or update the profile picture on the page
-      console.log('File uploaded:', file.name);
+    // Perform the necessary actions to upload the picture here
+    // You can display a success message or update the profile picture on the page
+    console.log('File uploaded:', file.name);
   } else {
-      console.log('No file selected.');
+    console.log('No file selected.');
   }
 
   closePopup();

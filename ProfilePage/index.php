@@ -135,30 +135,19 @@ $conn->close();
     <div class="row">
       <div class="col-lg-4">
         <div class="card shadow-sm">
-            <!-- <i class="bi bi-pen col-md-12 text-right" onclick="startNameEdit()"></i> -->
-          
-          <!-- <div class="card-header bg-transparent text-center">
-            <label for="upload-profile-pic">
-              <img class="profile_img" src="images/profile/userprofile.jpg" alt="student dp">
-          </label>
-          <input type="file" id="upload-profile-pic" style="display: none;">
-             <h3 class="h2 mb-0 mr-2" contenteditable="true" id="name" onkeydown="handleNameEdit(event)">Ishmam Ahasan Samin</h3> 
-            <h3 class="h2 mb-0 mr-2"></h3>
-            <a href="../Analytic/index.html"><h6>Analytics</h6></a>
-          </div> -->
-          <div class="card-header bg-transparent text-center">
-          <div class="popup" id="upload-popup">
-    <span class="close-popup" onclick="closePopup()">&times;</span>
-    <h4>Upload Profile Picture</h4>
-    <form method="POST" action="upload_profile_pic.php" enctype="multipart/form-data">
+        <div class="card-header bg-transparent text-center">
+    <div class="popup" id="upload-popup">
+      <span class="close-popup" onclick="closePopup()">&times;</span>
+      <h4>Upload Profile Picture</h4>
+      <form method="POST" action="upload_profile_pic.php" enctype="multipart/form-data">
         <input type="file" name="profile_pic" id="upload-profile-pic" accept=".jpg, .jpeg, .png, .gif">
         <button type="submit">Upload</button>
-    </form>
-</div>
-            <img class="profile_img" src=<?php echo htmlspecialchars($ProfilePic);?> onclick="openPopup()">
-            <h3 class="h2 mb-0 mr-2"><?php echo htmlspecialchars($fullName); ?></h3>
-            <a href="../Analytic/index.php"><h6>Analytics</h6></a>
-        </div>
+      </form>
+    </div>
+    <img class="profile_img" src="<?php echo htmlspecialchars($ProfilePic); ?>" onclick="openPopup()">
+    <h3 class="h2 mb-0 mr-2"><?php echo htmlspecialchars($fullName); ?></h3>
+    <a href="../Analytic/index.php"><h6>Analytics</h6></a>
+  </div>
           <div class="card-body">
             <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
             <p class="mb-0"><strong class="pr-1">Occupation: </strong>Programmer</p>
@@ -512,14 +501,6 @@ document.addEventListener("keydown", function(event) {
         }}
       ;
 
-      function openPopup() {
-      var popup = document.getElementById("upload-popup");
-      popup.style.display = "block";
-    }
-    function closePopup() {
-      var popup = document.getElementById("upload-popup");
-      popup.style.display = "none";
-    }
       
     </script>
   </body>
