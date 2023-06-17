@@ -41,12 +41,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $deleteQuery2 = "DELETE FROM posts WHERE username = '$username'";
             $deleteQuery3 = "DELETE FROM rating WHERE username = '$username'";
             $deleteQuery4 = "DELETE FROM comment WHERE username = '$username'";
-
+            $deleteQuery5 = "DELETE FROM userdetail WHERE username = '$username'";
             // Execute the delete queries
             $conn->query($deleteQuery1);
             $conn->query($deleteQuery2);
             $conn->query($deleteQuery3);
             $conn->query($deleteQuery4);
+            $conn->query($deleteQuery5);
 
             // Commit the transaction
             $conn->commit();

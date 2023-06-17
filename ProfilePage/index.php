@@ -15,7 +15,7 @@ if (isset($_POST["logout"])) {
     // Clear the session and redirect to the login page
     session_unset();
     session_destroy();
-    header("location: index.php");
+    header("Location: ../OHIO/index.php");
     exit;
 }
 
@@ -123,10 +123,13 @@ $conn->close();
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
       <i class="bi bi-plus text-white"></i>
       <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
-      <img src="images/profile/userprofile.jpg" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
+      <img src="<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
       <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
       <i class="bi bi-box-arrow-left text-white"></i>
-      <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
+      <a style="font-weight: bold; color:white; font-size:small;" href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">LOG OUT</a>
+          <form id="logout-form" method="post" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+          </form>
     </div>
     
 </div>
@@ -229,7 +232,28 @@ $conn->close();
   </div>
 </div>
 
+<script>
+  function confirmDeleteAccount() {
+    // Ask for confirmation before deleting the account
+    if (confirm("Are you sure you want to delete your account?")) {
+      deleteAccount();
+    }
+  }
 
+  function deleteAccount() {
+    // Send an AJAX request to delete_account.php
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "delete_account.php", true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // Handle the response from delete_account.php
+        var response = xhr.responseText;
+        alert(response); // Display the response message
+      }
+    };
+    xhr.send();
+  }
+</script>
       <h4 class="mb-0 text-center">MY BLOG</h4>
 
   <body>
