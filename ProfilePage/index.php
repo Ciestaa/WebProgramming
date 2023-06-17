@@ -267,10 +267,10 @@ $conn->close();
                     echo '<div class="image-box">';
                     if($image != null)
                     {
-                      echo '<a href="../OHIO/viewpost_user.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                      echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
                     }
                     elseif ($image== null) {
-                      echo '<a href="../OHIO/viewpost_user.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
+                      echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
                     }
                     echo '</div>';
                     echo '<div class="profile-details">';
