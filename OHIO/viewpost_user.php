@@ -13,6 +13,9 @@ $username = $_SESSION["username"];
 // Define variables for the form fields
 $comment = "";
 
+// Retrieve the author parameter from the URL
+$author = isset($_GET['author']) ? $_GET['author'] : '';
+
 if (isset($_POST["logout"])) {
     // Clear the session and redirect to the login page
     session_unset();
@@ -255,9 +258,36 @@ if (isset($_POST['comment'])) {
             }
 
             $conn->close(); // Close the database connection
-        } else {
-            echo "Invalid post ID.";
+        } else if (isset($_GET['author'])) {
+            $searchusername = isset($_GET['author']) ? $_GET['author'] : '';
+
+            // Fetch user details using the provided username
+            $sql = "SELECT * FROM userdetail WHERE Username = '$searchusername'";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                // Loop through the rows and access each user detail
+                while ($row = $result->fetch_assoc()) {
+                    // Access the user details here
+                    // ...
+
+                    // Retrieve the fullname from the row
+                    $fullname = $row['FullName'];
+
+                    // Display the user details
+                    echo '<div class="user-container">';
+                    echo '<h2>' . htmlspecialchars($fullname) . '</h2>';
+                    // Display other user details
+                    // ...
+                    echo '</div>';
+                }
+            } else {
+                echo "User not found.";
+            }
+        }else{
+            echo "Invalid parameter.";
         }
+        
         ?>
         </div>
         <div class="rating-container">

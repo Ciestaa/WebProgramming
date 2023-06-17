@@ -115,10 +115,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="error"><?php echo $login_err; ?></div>
             <?php endif; ?>
 
-            <p>
-                <input type="checkbox" name="remember" id="remember">
-                <label for="remember">Remember me for 14 days</label>
-            </p>
         </div>
         <p class="p-container">
             <span><a href="../Login/Forgotpassword.html">Forgot Password?</a></span>
