@@ -21,24 +21,24 @@
     <script>
       function confirmDelete(event) {
         event.preventDefault(); // Prevents the link from navigating
-      
+
         // Create the confirmation popup
         var confirmPopup = document.createElement("div");
         confirmPopup.className = "popup";
-        
+
         var confirmMessage = document.createElement("p");
         confirmMessage.textContent = "Are you sure you want to delete the post?";
         confirmPopup.appendChild(confirmMessage);
-        
+
         var yesButton = document.createElement("button");
         yesButton.textContent = "Yes";
         yesButton.className = "red-button";
         yesButton.onclick = function() {
           confirmPopup.remove(); // Remove the confirmation popup
-          showDeletedMessage(); // Show the "Post deleted" popup
+          deletePost(); // Delete the post and comments
         };
         confirmPopup.appendChild(yesButton);
-        
+
         var noButton = document.createElement("button");
         noButton.textContent = "No";
         noButton.className = "white-button";
@@ -46,48 +46,47 @@
           confirmPopup.remove(); // Remove the confirmation popup
         };
         confirmPopup.appendChild(noButton);
-        
+
         document.body.appendChild(confirmPopup); // Append the confirmation popup to the body
       }
-      
-      function showDeletedMessage() {
-        // Create the "Post deleted" popup
-        var deletedPopup = document.createElement("div");
-        deletedPopup.className = "popup deleted-popup";
-        
-        var deletedMessage = document.createElement("p");
-        deletedMessage.textContent = "The post has been deleted";
-        deletedPopup.appendChild(deletedMessage);
-        
-        document.body.appendChild(deletedPopup); // Append the "Post deleted" popup to the body
-        setTimeout(function() {
-          deletedPopup.remove(); // Remove the "Post deleted" popup after a certain period
-        }, 2000); // 2000 milliseconds (2 seconds) delay before removing the popup
+
+      function deletePost() {
+        // Retrieve the postID from the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var postID = urlParams.get("post_id");
+
+        // Send an AJAX request to delete the post and comments
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "deletePost.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = xhr.responseText;
+                    if (response === "success") {
+                        alert("Post and comments deleted successfully.");
+                        window.location.href = "../OHIO/post_page_user.php"; // Redirect to a new page
+                    } else {
+                        console.error(response);
+                        alert("Error deleting post and comments. Please check the console for more details.");
+                    }
+                } else {
+                    console.error("Request failed. Status: " + xhr.status);
+                    alert("Error deleting post and comments. Please check the console for more details.");
+                }
+            }
+        };
+        xhr.send("post_id=" + encodeURIComponent(postID));
       }
-      </script>
-      <script>
-        function editText() {
-          var titleElement = document.getElementById("title");
-          var detailsElement = document.getElementById("details");
-        
-          // Toggle contenteditable attribute
-          titleElement.contentEditable = !titleElement.isContentEditable;
-          detailsElement.contentEditable = !detailsElement.isContentEditable;
-        
-          // Apply styling for editable state
-          if (titleElement.isContentEditable) {
-            titleElement.style.backgroundColor = "lightyellow";
-            detailsElement.style.backgroundColor = "lightyellow";
-          } else {
-            titleElement.style.backgroundColor = "transparent";
-            detailsElement.style.backgroundColor = "transparent";
-          }
-        }
-        </script>
+    </script>
         <script>
           function editText() {
             var titleElement = document.getElementById("title");
             var detailsElement = document.getElementById("details");
+            
+            // Retrieve the postID from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var postID = urlParams.get("post_id");
           
             // Toggle contenteditable attribute
             titleElement.contentEditable = !titleElement.isContentEditable;
@@ -98,6 +97,27 @@
               titleElement.style.backgroundColor = "lightyellow";
               detailsElement.style.backgroundColor = "lightyellow";
             } else {
+
+              const data = {
+                updatedTitle: titleElement.textContent,
+                updatedDescription: detailsElement.textContent,
+              };
+
+              var xhr = new XMLHttpRequest();
+                xhr.open("POST", "updatePost.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = xhr.responseText;
+                        if (response === "success") {
+                            alert("Post updated successfully.");
+                        } else {
+                            alert("Error updating post.");
+                        }
+                    }
+                };
+                xhr.send("post_id=" + encodeURIComponent(postID) + "&title=" + encodeURIComponent(data.updatedTitle) + "&description=" + encodeURIComponent(data.updatedDescription));
+
               titleElement.style.backgroundColor = "transparent";
               detailsElement.style.backgroundColor = "transparent";
               showPopup();
@@ -124,10 +144,11 @@
           }
           
           document.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-              editText();
+            if (event.keyCode === 13) { // 13 corresponds to the "Enter" key
+                editText();
             }
           });
+
           </script>
 </head>
 <body> 
@@ -162,14 +183,53 @@
       </div> 
     removed time
     -->
-      <div class="box-image">
-        <img src="CSS/Images/bangkok.jpg" alt="Placeholder image">
-      </div>
+    <?php
 
-      <div class="box-text">
-        <h2 id="title">Bangkok</h2>
-        <p id="details">This is details about my trip 3 days in Bangkok.</p>
-      </div>
+    if (isset($_GET['post_id'])) {
+        $postID = $_GET['post_id'];
+
+        // Add your database connection code here
+        $conn = new mysqli('localhost', 'root', '', 'gotravel');
+        if ($conn->connect_error) {
+            die('Connection failed: ' . $conn->connect_error);
+        }
+
+        // Fetch the post details using the provided post ID
+        $sql = "SELECT * FROM posts WHERE postID = '$postID'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Display the post details
+            while ($row = $result->fetch_assoc()) {
+                $usernamePost = $row['Username'];
+                $title = $row['Title'];
+                $description = $row['Description'];
+                $image = $row['Image'];
+                $location = $row['Location'];
+
+                // Display the post details here
+                echo '<div class="box-image">';
+                if ($image != null) {
+                    echo '<img src="' . $image . '" alt="Post Image">';
+                } else {
+                    echo '<img src="CSS/Images/bangkok.jpg" alt="Placeholder image">';
+                }
+                echo '</div>';
+
+                echo '<div class="box-text">';
+                echo '<h2 id="title">' . $title . '</h2>';
+                echo '<p id="details">' . $description . '</p>';
+                echo '</div>';
+            }
+        } else {
+            echo "Post not found.";
+        }
+
+        $conn->close(); // Close the database connection
+    } else {
+        echo "Invalid post ID.";
+    }
+    ?>
 
       <div class="box-buttons">
         <a href="#">

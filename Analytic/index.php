@@ -46,6 +46,9 @@ if ($result->num_rows > 0) {
     }
 } else {
     // No rows returned
+    // Set both comment count and total view to 0
+    $CommentCount = 0;
+    $TotalView = 0;
     // Handle the case when no user details are found
 }
 
