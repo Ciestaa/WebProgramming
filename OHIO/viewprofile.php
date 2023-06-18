@@ -272,10 +272,33 @@ if (isset($_POST['comment'])) {
 
                     // Retrieve the fullname from the row
                     $fullname = $row['FullName'];
-
+                    $phone = $row['PhoneNo'];
+                    $ProfilePic2 = $row['ProfilePic'];
+                    $usernameProfile = $row['Username'];
+                    $userGender = $row['Gender'];
+                    $insta = $row['Instagram'];
+                    $country = $row['CountryTravel'];
+                    $year = $row['YearTravel'];
                     // Display the user details
+                    
                     echo '<div class="user-container">';
-                    echo '<h2>' . htmlspecialchars($fullname) . '</h2>';
+                    echo '<img src="../ProfilePage/' . $ProfilePic2 . '"  alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
+                    echo '<h5 style="display: inline-block; vertical-align: middle; margin-left: 10px;">'.$fullname.'</h5>';
+                    echo '<br>';
+                    echo '<p style="margin-left: 60px;"> @'. $usernameProfile .'</p>';
+
+                    echo '<div style="display: flex; align-items: center;">';
+                    echo '<h5 style="margin-left: 50px; font-size: 20px;">Instagram:</h5>';
+                    echo '<a href="https://www.instagram.com/'.$insta.'" style="margin-left: 10px; font-size: 20px; text-decoration: none; color:black;">@'.$insta.'</a>';
+                    echo '</div>';
+
+
+
+                    echo '<h5 style="margin-left: 50px;">Gender: ' . $userGender . '</h5>';
+                    echo '<h5 style="margin-left: 50px;">Country: ' . $country . '</h5>';
+                    echo '<h5 style="margin-left: 50px;">Year(s) of experience: ' . $year . ' year(s)</h5>';
+                    echo '<br>';
+                    echo '<br>';
                     // Display other user details
                     // ...
                     echo '</div>';
@@ -287,22 +310,22 @@ if (isset($_POST['comment'])) {
             echo "Invalid parameter.";
         }
         
-        ?>
+        
 
-            <h5>Posts</h2>
+            echo'<center><h5>'. $_GET['author'] .' Posts</h2></center>';
 
 
-        <?php
+        
         $conn = new mysqli('localhost', 'root', '', 'gotravel');
         if ($conn->connect_error) {
           die('Connection failed: ' . $conn->connect_error);
         }
 
-        function fetchPosts($conn, $offset, $limit) {
+        function fetchPosts($conn) {
           // Fetch post details with offset and limit
-          $sql = "SELECT * FROM posts ORDER BY postID DESC LIMIT $offset, $limit";
+          $sql = "SELECT * FROM posts ORDER BY postID DESC";
           $result = $conn->query($sql);
-
+          $userPageUsername = $_GET['author'];
           if ($result->num_rows > 0) {
             // Loop through the rows and access each post detail
             while ($row = $result->fetch_assoc()) {
@@ -313,7 +336,7 @@ if (isset($_POST['comment'])) {
               $description = $row['Description'];
               $image = $row['Image'];
               $location = $row['Location'];
-              if($usernamePOST == isset($_GET['author']) ? $_GET['author'] : ''){ //----------------------------------------------------------------sini oi
+              if($usernamePOST == $userPageUsername){
               // Display the post details here
               echo '<div class="post-container">';
               echo '<div class="post-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">';
@@ -342,17 +365,13 @@ if (isset($_POST['comment'])) {
         }
 
         // Fetch the first 10 post details
-        fetchPosts($conn, 0, 10);
+        fetchPosts($conn);
         ?>
 
 
  
 
         </div>
-            <center>
-                <button type="button" class="btn btn-success" onclick="loadMoreComments()">Load More</button>
-            </center>
-            <div class="loader-div" style="display: none;">Loading...</div>
         </div>
        
 
