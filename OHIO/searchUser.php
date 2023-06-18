@@ -174,7 +174,7 @@ if (!empty($query)) {
 
       while ($userRow = $userResult->fetch_assoc()) {
         // Display user details here
-        echo '<a href="../OHIO/viewpost_user.php?author=' . $userRow['Username'] . '" class="white-box">';
+        echo '<a href="../OHIO/viewprofile.php?author=' . $userRow['Username'] . '" class="white-box">';
         echo '<div class="box-text">';
         echo '<h2>' . $userRow['FullName'] . '</h2>';
         echo '<p>' . truncateText($userRow['PhoneNo'], 100) . '</p>';

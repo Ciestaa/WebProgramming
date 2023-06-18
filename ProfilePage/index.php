@@ -254,78 +254,168 @@ $conn->close();
     xhr.send();
   }
 </script>
-      <h4 class="mb-0 text-center">MY BLOG</h4>
-
-  <body>
-
-    <div class="container swiper">
-      <div class="slide-container">
-          <div class="card-wrapper swiper-wrapper">
-          <?php
+<h4 class="mb-0 text-center">MY BLOG</h4>
+      <?php
           $conn = new mysqli('localhost', 'root', '', 'gotravel');
           if ($conn->connect_error) {
             die('Connection failed: ' . $conn->connect_error);
           }
+          $sql = "SELECT * FROM posts ORDER BY postID DESC";
+          $result = $conn->query($sql);
 
-          function fetchPosts($conn) {
-            // Fetch post details with offset and limit
-            $sql = "SELECT * FROM posts ORDER BY postID DESC";
-            $result = $conn->query($sql);
+          $totalpost =0;
 
-            if ($result->num_rows > 0) {
-              // Loop through the rows and access each post detail
-              while ($row = $result->fetch_assoc()) {
-                $PostID = $row['postID'];
-                $usernamePOST = $row['Username'];
-                $title = $row['Title'];
-                $description = $row['Description'];
-                $image = $row['Image'];
-                $location = $row['Location'];
-                
-                if($usernamePOST == $_SESSION["username"]){
-                // Display the post details here
-                    echo '<div class="card swiper-slide">';
-                    echo '<div class="image-box">';
-                    if($image != null)
-                    {
-                      echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
-                    }
-                    elseif ($image== null) {
-                      echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
-                    }
-                    echo '</div>';
-                    echo '<div class="profile-details">';
-                    echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
-                    echo '<div class="name-job">';
-                    echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
-                    echo '<h4 class="job">5 February, 2021</h4>';
-                    echo '<h4 class="job">'.$location.'</h4>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
+          while ($row = $result->fetch_assoc()) {
+            $PostID = $row['postID'];
+            $usernamePOST = $row['Username'];
+
+            if($usernamePOST == $_SESSION["username"]){
+              $totalpost++;
+            }
+          }
+          echo $totalpost;
+          if($totalpost == 0)
+          {
+            echo 'You havent post anything yet!';
+          }
+          elseif($totalpost == 1 || $totalpost == 2 || $totalpost == 3)
+          { 
+            echo '<div class="card-wrapper swiper-wrapper">';
+            echo $totalpost;
+            $conn = new mysqli('localhost', 'root', '', 'gotravel');
+            if ($conn->connect_error) {
+              die('Connection failed: ' . $conn->connect_error);
+            }
+  
+            function fetchPosts($conn) {
+              // Fetch post details with offset and limit
+              $sql = "SELECT * FROM posts ORDER BY postID DESC";
+              $result = $conn->query($sql);
+  
+              if ($result->num_rows > 0) {
+                // Loop through the rows and access each post detail
+                while ($row = $result->fetch_assoc()) {
+                  $PostID = $row['postID'];
+                  $usernamePOST = $row['Username'];
+                  $title = $row['Title'];
+                  $description = $row['Description'];
+                  $image = $row['Image'];
+                  $location = $row['Location'];
+                  
+                  if($usernamePOST == $_SESSION["username"]){
+                    echo '<div class="container" style="display: flex; justify-content: center;">';
+                          echo '<div class="card swiper-slide" style="width: 400px;">';
+                          echo '<div class="image-box">';
+                          if($image != null)
+                          {
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                          }
+                          elseif ($image== null) {
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
+                          }
+                          echo '</div>';
+                          echo '<div class="profile-details">';
+                          echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
+                          echo '<div class="name-job">';
+                          echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
+                          echo '<h4 class="job">5 February, 2021</h4>';
+                          echo '<h4 class="job">'.$location.'</h4>';
+                          echo '</div>';
+                          echo '</div>';
+                          echo '</div>';
+                          echo '</div>';
                   }
-              }
-            } else {
-              echo "No posts found.";
-            }
-          }
-          function truncateText($text, $limit) {
-            if (strlen($text) > $limit) {
-                $truncated = substr($text, 0, $limit);
-                return $truncated . '...';
-            }
-            return $text;
-          }
+                    
+                    
 
-          // Fetch the first 10 post details
-          fetchPosts($conn);
-          ?>
-          </div>
-        </div>
-        <div class="swiper-button-next swiper-navBtn"></div>
-        <div class="swiper-button-prev swiper-navBtn"></div>
-        <div class="swiper-pagination"></div>
-      </div>      
+                  }
+                }
+              }
+              
+              function truncateText($text, $limit) {
+                if (strlen($text) > $limit) {
+                    $truncated = substr($text, 0, $limit);
+                    return $truncated . '...';
+                }
+                return $text;
+              }
+              fetchPosts($conn);
+              echo '</div>';
+
+
+            }
+
+            
+          else
+          {echo '<div class="container swiper">';
+            echo '<div class="slide-container">';
+            echo '<div class="card-wrapper swiper-wrapper">';
+                $conn = new mysqli('localhost', 'root', '', 'gotravel');
+                if ($conn->connect_error) {
+                  die('Connection failed: ' . $conn->connect_error);
+                }
+      
+                function fetchPosts($conn) {
+                  // Fetch post details with offset and limit
+                  $sql = "SELECT * FROM posts ORDER BY postID DESC";
+                  $result = $conn->query($sql);
+      
+                  if ($result->num_rows > 0) {
+                    // Loop through the rows and access each post detail
+                    while ($row = $result->fetch_assoc()) {
+                      $PostID = $row['postID'];
+                      $usernamePOST = $row['Username'];
+                      $title = $row['Title'];
+                      $description = $row['Description'];
+                      $image = $row['Image'];
+                      $location = $row['Location'];
+                      
+                      if($usernamePOST == $_SESSION["username"]){
+                      // Display the post details here
+                          echo '<div class="card swiper-slide">';
+                          echo '<div class="image-box">';
+                          if($image != null)
+                          {
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                          }
+                          elseif ($image== null) {
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
+                          }
+                          echo '</div>';
+                          echo '<div class="profile-details">';
+                          echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
+                          echo '<div class="name-job">';
+                          echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
+                          echo '<h4 class="job">5 February, 2021</h4>';
+                          echo '<h4 class="job">'.$location.'</h4>';
+                          echo '</div>';
+                          echo '</div>';
+                          echo '</div>';
+                        }
+                    }
+                  } else {
+                    echo "No posts found.";
+                  }
+                }
+                function truncateText($text, $limit) {
+                  if (strlen($text) > $limit) {
+                      $truncated = substr($text, 0, $limit);
+                      return $truncated . '...';
+                  }
+                  return $text;
+                }
+      
+                // Fetch the first 10 post details
+                fetchPosts($conn);
+
+                echo '</div>';
+                echo '</div>';
+                echo '<div class="swiper-button-next swiper-navBtn"></div>';
+                echo '<div class="swiper-button-prev swiper-navBtn"></div>';
+                echo '<div class="swiper-pagination"></div>';
+                echo '</div>';
+          }
+          ?>  
 
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
