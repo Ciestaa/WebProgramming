@@ -160,9 +160,23 @@ $conn->close();
     <a href="../Analytic/index.php"><h6>Analytics</h6></a>
   </div>
           <div class="card-body">
-            <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
-            <p class="mb-0"><strong class="pr-1">Occupation: </strong>Programmer</p>
-            <p class="mb-0"><strong class="pr-1">Reviews: </strong><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></p>
+            <!-- 
+              <p class="mb-0"><strong class="pr-1">Location: </strong>Singapore</p>
+              <p class="mb-0"><strong class="pr-1">Occupation: </strong>Programmer</p> 
+              <p class="mb-0"><strong class="pr-1">Reviews: </strong><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></p> 
+            -->
+          <table class="table table-bordered">
+          <tr>
+                <th width="30%">Location</th>
+                <td width="2%">:</td>
+                <td contenteditable="false" id="nama" type="text"><?php echo htmlspecialchars($fullName); ?></td>
+          </tr>
+          <tr>
+                <th width="30%">Occupation</th>
+                <td width="2%">:</td>
+                <td contenteditable="false" id="nama" type="text"><?php echo htmlspecialchars($fullName); ?></td>
+          </tr>
+          </table>
           </div>
         </div>
       </div>
