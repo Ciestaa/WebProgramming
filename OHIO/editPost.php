@@ -1,3 +1,82 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to the login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: index.php");
+    exit;
+}
+
+// Get the username from your session or database
+$username = $_SESSION["username"]; // Replace with the appropriate variable storing the username
+
+if(isset($_POST["logout"])){
+  // Clear the session and redirect to the login page
+  session_unset();
+  session_destroy();
+  header("location: index.php");
+  exit;
+}
+
+$conn = new mysqli('localhost', 'root', '', 'gotravel');
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_error);
+}
+
+// Fetch the post details using the provided post ID
+$sql = "SELECT * FROM userdetail WHERE Username = '$username'"; // Enclose $username in quotes
+$sql2 = "SELECT * FROM user WHERE Username = '$username'";
+$result = $conn->query($sql);
+$result2 = $conn->query($sql2);
+
+if ($result->num_rows > 0) {
+    // Loop through each row and fetch the data
+    while ($row = $result->fetch_assoc()) {
+        // Access the data using column names
+        $fullName = $row["FullName"];
+        $gender = $row["Gender"];
+        $phoneNo = $row["PhoneNo"];
+        $ProfilePic = $row["ProfilePic"];
+        $instagram = $row["Instagram"];
+        $yearTravel = $row["YearTravel"];
+        $countryTravel = $row["CountryTravel"];
+        // Retrieve other column values here
+
+        // Do something with the data
+        // ...
+    }
+} else {
+    // No rows returned
+    $fullName = "";
+    $gender = "";
+    $phoneNo = "";
+    $ProfilePic = "";
+    $instagram = "";
+    $yearTravel = "";
+    $countryTravel = "";
+    // Handle the case when no user details are found
+}
+
+if ($result2->num_rows > 0) {
+  // Loop through each row and fetch the data
+  while ($row = $result2->fetch_assoc()) {
+      // Access the data using column names
+      $email = $row["Email"];
+      // Retrieve other column values here
+
+      // Do something with the data
+      // ...
+  }
+} else {
+  // No rows returned
+  $email = "";
+  // Handle the case when no user details are found
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,12 +90,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <script>
-      function search() {
-          var query = document.getElementById("search-bar").value;
-          if (query !== "") {
-              window.location.href = "../OHIO/searchUser.html?query=" + encodeURIComponent(query);
-          }
-      }
+        function search() {
+            var query = document.getElementById("search-bar").value;
+            if (query !== "") {
+                window.location.href = "../OHIO/searchUser.php?query=" + encodeURIComponent(query);
+            }
+        }
     </script>
     <script>
       function confirmDelete(event) {
@@ -166,13 +245,16 @@
       </div>
         <div class="nav-links">
           <i class="bi bi-house-door text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.html">HOME</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/post_page_user.php">HOME</a>
           <i class="bi bi-plus text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.html">CREATE POST</a>
-          <img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
-          <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.html">James19</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/new_post.php">CREATE POST</a>
+          <img src="../ProfilePage/<?php echo htmlspecialchars($ProfilePic); ?>" alt="Profile Image" style="border-radius: 50%; float: right; width: 30px; height: 30px;">
+          <a style="font-weight: bold; color:white; font-size:medium;" href="../ProfilePage/index.php"><?php echo htmlspecialchars($username); ?></a>
           <i class="bi bi-box-arrow-left text-white"></i>
-          <a style="font-weight: bold; color:white; font-size:small;" href="../OHIO/index.html">LOG OUT</a>
+          <a style="font-weight: bold; color:white; font-size:small;" href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">LOG OUT</a>
+          <form id="logout-form" method="post" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+          </form>
         </div>
         
     </div>

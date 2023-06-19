@@ -66,8 +66,8 @@ if ($result->num_rows > 0) {
     echo "Invalid username. Please try again.";
 }
 // Prepare and bind the SQL statement
-$stmt = $conn->prepare("INSERT INTO userdetail (Username,FullName, Gender, PhoneNo, Instagram, YearTravel, CountryTravel,Occupation,Location) VALUES (?,?, ?, ?, ?, ?, ?,?.?)");
-$stmt->bind_param("sssssss", $username,$name, $age, $job, $instagram, $yearTravel, $countryTravel,$occ,$loc);
+$stmt = $conn->prepare("INSERT INTO userdetail (Username,FullName, Gender, PhoneNo, Instagram, YearTravel, CountryTravel,Occupation,Location) VALUES (?,?, ?, ?, ?, ?, ?,?,?)");
+$stmt->bind_param("sssssssss", $username,$name, $age, $job, $instagram, $yearTravel, $countryTravel,$occ,$loc);
 
 // Execute the SQL statement
 if ($stmt->execute()) {

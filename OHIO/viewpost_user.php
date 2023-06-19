@@ -321,6 +321,7 @@ if (isset($_POST['comment'])) {
                     $PostIDRating = $row['postID'];
                     $usernameRating = $row['Username'];
                     $ratingvalue = $row['Rating'];
+                    
 
                     
 
@@ -370,7 +371,7 @@ if (isset($_POST['comment'])) {
 
                 function fetchPosts($conn, $offset, $limit,$postID) {
                     // Fetch post details with offset and limit
-                    $sql = "SELECT * FROM comment ORDER BY comID DESC LIMIT $offset, $limit";
+                    $sql = "SELECT p.*, u.* FROM comment p  INNER JOIN userdetail u ON p.Username = u.username WHERE p.postID = '$postID' ORDER BY comID DESC LIMIT $offset, $limit ";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
@@ -379,12 +380,14 @@ if (isset($_POST['comment'])) {
                         $PostIDCom = $row['postID'];
                         $usernameComment = $row['Username'];
                         $comments = $row['Comment'];
+                        $checkQuery = "SELECT * FROM userdetail WHERE username = '$usernameComment'";
+                        $ProfilePic2 = $row['ProfilePic'];
 
                         if($PostIDCom == $postID)
                         {
                             // Display the post details here
                             echo '<div class="comment-incontainer">';
-                            echo '<img src="CSS/Images/profile.png" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
+                            echo '<img src="../ProfilePage/' . $ProfilePic2 . '" alt="Profile Image" style="border-radius: 50%; float: left; width: 50px; height: 50px;">';
                             echo '<h6 style="display: inline-block; vertical-align: middle; margin-left: 10px;">'.$usernameComment.'</h6>';
                             echo '<br>';
                             echo '<p style="margin-left: 60px;">'. $comments .'</p>';

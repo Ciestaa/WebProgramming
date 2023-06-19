@@ -307,7 +307,7 @@ $conn->close();
   
             function fetchPosts($conn) {
               // Fetch post details with offset and limit
-              $sql = "SELECT * FROM posts ORDER BY postID DESC";
+              $sql = "SELECT p.*, u.* FROM posts p INNER JOIN userdetail u ON p.Username = u.username ORDER BY p.postID";
               $result = $conn->query($sql);
   
               if ($result->num_rows > 0) {
@@ -319,21 +319,22 @@ $conn->close();
                   $description = $row['Description'];
                   $image = $row['Image'];
                   $location = $row['Location'];
-                  
+                  $ProfilePic = $row['ProfilePic'];
+
                   if($usernamePOST == $_SESSION["username"]){
                     echo '<div class="container" style="display: flex; justify-content: center;">';
                           echo '<div class="card swiper-slide" style="width: 400px;">';
                           echo '<div class="image-box">';
                           if($image != null)
                           {
-                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="../OHIO/' . $image . '" alt="" /></a>';
                           }
                           elseif ($image== null) {
                             echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
                           }
                           echo '</div>';
                           echo '<div class="profile-details">';
-                          echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
+                          echo '<img src="' . $ProfilePic . '" alt="" /></a>'; //later update the profile pic
                           echo '<div class="name-job">';
                           echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
                           echo '<h4 class="job">5 February, 2021</h4>';
@@ -375,7 +376,7 @@ $conn->close();
       
                 function fetchPosts($conn) {
                   // Fetch post details with offset and limit
-                  $sql = "SELECT * FROM posts ORDER BY postID DESC";
+                  $sql = "SELECT p.*, u.* FROM posts p INNER JOIN userdetail u ON p.Username = u.username ORDER BY p.postID";
                   $result = $conn->query($sql);
       
                   if ($result->num_rows > 0) {
@@ -387,6 +388,8 @@ $conn->close();
                       $description = $row['Description'];
                       $image = $row['Image'];
                       $location = $row['Location'];
+                      $ProfilePic = $row['ProfilePic'];
+                      
                       
                       if($usernamePOST == $_SESSION["username"]){
                       // Display the post details here
@@ -394,14 +397,14 @@ $conn->close();
                           echo '<div class="image-box">';
                           if($image != null)
                           {
-                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="' . $image . '" alt="" /></a>';
+                            echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="../OHIO/' . $image . '" alt="" /></a>';
                           }
                           elseif ($image== null) {
                             echo '<a href="../OHIO/editPost.php?post_id=' . $PostID . '"><img src="ProfilePage/css/2.jpg" alt="" /></a>';
                           }
                           echo '</div>';
                           echo '<div class="profile-details">';
-                          echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
+                          echo '<img src="' . $ProfilePic . '" alt="" /></a>'; //later update the profile pic
                           echo '<div class="name-job">';
                           echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
                           echo '<h4 class="job">'.$location.'</h4>';
@@ -521,8 +524,8 @@ document.addEventListener("keydown", function(event) {
       job: noCell.textContent,
       instagram: instaCell.textContent,
       yearTravel: teCell.textContent,
-      countryTravel: countryCell.textContent
-      occ: locationCell.textContent
+      countryTravel: countryCell.textContent,
+      occ: locationCell.textContent,
       loc: occupationCell.textContent
     };
 
@@ -541,7 +544,7 @@ document.addEventListener("keydown", function(event) {
         }
       }
     };
-    xhr.send("fullName=" + encodeURIComponent(data.fullName) + "&age=" + encodeURIComponent(data.age) + "&job=" + encodeURIComponent(data.job) + "&instagram=" + encodeURIComponent(data.instagram) + "&yearTravel=" + encodeURIComponent(data.yearTravel) + "&countryTravel=" + encodeURIComponent(data.countryTravel + + "&occ=" + encodeURIComponent(data.occ)) + "&loc=" + encodeURIComponent(data.loc));
+    xhr.send("fullName=" + encodeURIComponent(data.fullName) + "&age=" + encodeURIComponent(data.age) + "&job=" + encodeURIComponent(data.job) + "&instagram=" + encodeURIComponent(data.instagram) + "&yearTravel=" + encodeURIComponent(data.yearTravel) + "&countryTravel=" + encodeURIComponent(data.countryTravel) + "&occ=" + encodeURIComponent(data.occ) + "&loc=" + encodeURIComponent(data.loc));
   }
 });
 
