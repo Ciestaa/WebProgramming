@@ -42,6 +42,8 @@ if ($result->num_rows > 0) {
         $instagram = $row["Instagram"];
         $yearTravel = $row["YearTravel"];
         $countryTravel = $row["CountryTravel"];
+        $Location = $row["Location"];
+        $Occupation = $row["Occupation"];
         // Retrieve other column values here
 
         // Do something with the data
@@ -56,6 +58,8 @@ if ($result->num_rows > 0) {
     $instagram = "";
     $yearTravel = "";
     $countryTravel = "";
+    $Location = "";
+    $Occupation = "";
     // Handle the case when no user details are found
 }
 
@@ -400,7 +404,6 @@ $conn->close();
                           echo '<img src="images/profile/userprofile.jpg" alt="" /></a>'; //later update the profile pic
                           echo '<div class="name-job">';
                           echo '<h3 class="name">'.truncateText($title, 15).'</h3>';
-                          echo '<h4 class="job">5 February, 2021</h4>';
                           echo '<h4 class="job">'.$location.'</h4>';
                           echo '</div>';
                           echo '</div>';
@@ -519,6 +522,8 @@ document.addEventListener("keydown", function(event) {
       instagram: instaCell.textContent,
       yearTravel: teCell.textContent,
       countryTravel: countryCell.textContent
+      occ: locationCell.textContent
+      loc: occupationCell.textContent
     };
 
     // Send the data to the server using AJAX
@@ -536,7 +541,7 @@ document.addEventListener("keydown", function(event) {
         }
       }
     };
-    xhr.send("fullName=" + encodeURIComponent(data.fullName) + "&age=" + encodeURIComponent(data.age) + "&job=" + encodeURIComponent(data.job) + "&instagram=" + encodeURIComponent(data.instagram) + "&yearTravel=" + encodeURIComponent(data.yearTravel) + "&countryTravel=" + encodeURIComponent(data.countryTravel));
+    xhr.send("fullName=" + encodeURIComponent(data.fullName) + "&age=" + encodeURIComponent(data.age) + "&job=" + encodeURIComponent(data.job) + "&instagram=" + encodeURIComponent(data.instagram) + "&yearTravel=" + encodeURIComponent(data.yearTravel) + "&countryTravel=" + encodeURIComponent(data.countryTravel + + "&occ=" + encodeURIComponent(data.occ)) + "&loc=" + encodeURIComponent(data.loc));
   }
 });
 

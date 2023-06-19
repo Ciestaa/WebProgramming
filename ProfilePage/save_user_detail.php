@@ -14,6 +14,8 @@ $job = $_POST['job'];
 $instagram = $_POST['instagram'];
 $yearTravel = $_POST['yearTravel'];
 $countryTravel = $_POST['countryTravel'];
+$occ = $_POST['occ'];
+$loc = $_POST['loc'];
 
 $username = $_SESSION["username"]; // Retrieve the username from the session
 
@@ -64,8 +66,8 @@ if ($result->num_rows > 0) {
     echo "Invalid username. Please try again.";
 }
 // Prepare and bind the SQL statement
-$stmt = $conn->prepare("INSERT INTO userdetail (Username,FullName, Gender, PhoneNo, Instagram, YearTravel, CountryTravel) VALUES (?,?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssssss", $username,$name, $age, $job, $instagram, $yearTravel, $countryTravel);
+$stmt = $conn->prepare("INSERT INTO userdetail (Username,FullName, Gender, PhoneNo, Instagram, YearTravel, CountryTravel,Occupation,Location) VALUES (?,?, ?, ?, ?, ?, ?,?.?)");
+$stmt->bind_param("sssssss", $username,$name, $age, $job, $instagram, $yearTravel, $countryTravel,$occ,$loc);
 
 // Execute the SQL statement
 if ($stmt->execute()) {
