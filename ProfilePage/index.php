@@ -169,12 +169,12 @@ $conn->close();
           <tr>
                 <th width="30%">Location</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="nama" type="text"><?php echo htmlspecialchars($fullName); ?></td>
+                <td contenteditable="false" id="location" type="text"><?php echo htmlspecialchars($Location); ?></td>
           </tr>
           <tr>
                 <th width="30%">Occupation</th>
                 <td width="2%">:</td>
-                <td contenteditable="false" id="nama" type="text"><?php echo htmlspecialchars($fullName); ?></td>
+                <td contenteditable="false" id="occupation" type="text"><?php echo htmlspecialchars($Occupation); ?></td>
           </tr>
           </table>
           </div>
@@ -467,6 +467,8 @@ $conn->close();
   const instaCell = document.getElementById("Insta");
   const teCell = document.getElementById("TE");
   const countryCell = document.getElementById("Country");
+  const locationCell = document.getElementById("location");
+  const occupationCell = document.getElementById("occupation");
 
   namaCell.contentEditable = true;
   genCell.contentEditable = true;
@@ -475,6 +477,9 @@ $conn->close();
   instaCell.contentEditable = true;
   teCell.contentEditable = true;
   countryCell.contentEditable = true;
+  locationCell.contentEditable = true;
+  occupationCell.contentEditable = true;
+
 
   namaCell.focus();
 }
@@ -488,6 +493,8 @@ document.addEventListener("keydown", function(event) {
     const instaCell = document.getElementById("Insta");
     const teCell = document.getElementById("TE");
     const countryCell = document.getElementById("Country");
+    const locationCell = document.getElementById("location");
+    const occupationCell = document.getElementById("occupation");
 
     namaCell.contentEditable = false;
     genCell.contentEditable = false;
@@ -496,6 +503,8 @@ document.addEventListener("keydown", function(event) {
     instaCell.contentEditable = false;
     teCell.contentEditable = false;
     countryCell.contentEditable = false;
+    locationCell.contentEditable = false;
+    occupationCell.contentEditable = false;
 
     const h3Element = document.querySelector("h3.h2.mb-0.mr-2");
     h3Element.textContent = namaCell.textContent;
